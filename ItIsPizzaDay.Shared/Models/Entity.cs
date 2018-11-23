@@ -1,7 +1,10 @@
 namespace ItIsPizzaDay.Shared.Models
 {
-    public class Entity
+    using System;
+    using Abstract;
+
+    public class Entity : IEntity
     {
-        
+        public Guid Id { get; set; }
     }
 }

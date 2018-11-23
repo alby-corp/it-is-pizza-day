@@ -1,7 +1,10 @@
 namespace ItIsPizzaDay.Server.Controllers
 {
-    public class DefaultController
+    using Microsoft.AspNetCore.Mvc;
+
+    [Produces("application/json")]
+    public abstract class DefaultController : Controller
     {
-        
     }
+
 }

@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+    it-is-pizza-day:
+        image: postgres:11.1
+        environment:
+            - POSTGRES_USER=SamuraiTeam
+            - POSTGRES_PASSWORD=SamuraiTeam
+            - POSTGRES_DB=QueenMargherita
+        ports:
+            - 5555:5432
+        volumes:
+            - ./data/it-is-pizza-day:/var/lib/postgresql

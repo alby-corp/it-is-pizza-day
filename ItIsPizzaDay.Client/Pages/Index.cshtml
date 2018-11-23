@@ -1,0 +1,13 @@
+﻿@page "/"
+@inherits IndexComponent
+
+<h1>Hello, Pizza!</h1>
+
+<ul>
+    @foreach (var type in Types)
+    {
+        <li>@type.Description</li>
+    }
+</ul>
+
+<order Type="Sticazzi"></order>
