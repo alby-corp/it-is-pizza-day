@@ -7,8 +7,9 @@ create table ingredient
 
 create table type
 (
-  id uuid not null constraint type_pkey primary key,
-  description text not null
+	id uuid not null constraint type_pkey primary key,
+	description text not null,
+	priority integer
 );
 
 create table food

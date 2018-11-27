@@ -1,0 +1,23 @@
+@inherits WaiterComponent
+
+<form>
+    <div class="form-group">
+        <label for="supplements">Email address</label>
+        <select class="form-control" id="supplements">
+            @foreach (var supplement in Food.Name)
+            {
+                <option></option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="removals">Example select</label>
+        <select class="form-control" id="removals">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+        </select>
+    </div>
+</form>

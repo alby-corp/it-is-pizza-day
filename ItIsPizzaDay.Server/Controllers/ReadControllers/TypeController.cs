@@ -1,11 +1,12 @@
 namespace ItIsPizzaDay.Server.Controllers.ReadControllers
 {
-    using Shared.Models;
+    using Repositories;
+    using FoodType = Shared.Models.Type;
 
-    public class TypeController : ReadEntityController<Type>
+    public class TypeController : ReadEntityController<FoodType>
     {
-        public TypeController(QueenMargheritaContext context)
-            : base(context)
+        public TypeController(TypeRepository repository)
+            : base(repository)
         {
         }
     }

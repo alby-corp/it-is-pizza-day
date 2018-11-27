@@ -1,7 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace ItIsPizzaDay.Server
+﻿namespace ItIsPizzaDay.Server
 {
+    using Microsoft.EntityFrameworkCore;
     using Shared.Models;
 
     public partial class QueenMargheritaContext : DbContext
@@ -16,6 +15,7 @@ namespace ItIsPizzaDay.Server
         }
 
         public virtual DbSet<Food> Food { get; set; }
+        public virtual DbSet<FoodIngredient> FoodIngredient { get; set; }
         public virtual DbSet<FoodOrder> FoodOrder { get; set; }
         public virtual DbSet<FoodOrderIngredient> FoodOrderIngredient { get; set; }
         public virtual DbSet<Ingredient> Ingredient { get; set; }
@@ -23,22 +23,17 @@ namespace ItIsPizzaDay.Server
         public virtual DbSet<Order> Order { get; set; }
         public virtual DbSet<Type> Type { get; set; }
 
-        // Unable to generate entity type for table 'public.food_ingredient'. Please see the warning messages.
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                // #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                
+                // TODO: #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseNpgsql("Host=localhost;Port=5555;Database=QueenMargherita;Username=SamuraiTeam;Password=SamuraiTeam");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasPostgresExtension("uuid-ossp");
-
             modelBuilder.Entity<Food>(entity =>
             {
                 entity.ToTable("food");
@@ -55,15 +50,42 @@ namespace ItIsPizzaDay.Server
                     .HasColumnName("price")
                     .HasColumnType("numeric(4,2)");
 
-                entity.Property(e => e.Type).HasColumnName("type");
-
-                entity.Property(e => e.Visible).HasColumnName("visible");
-
+                entity.Property(e => e.Type)
+                    .HasColumnName("type");
+                
                 entity.HasOne(d => d.TypeNavigation)
                     .WithMany(p => p.Food)
                     .HasForeignKey(d => d.Type)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("food_type_fkey");
+
+                entity.Property(e => e.Visible)
+                    .IsRequired()
+                    .HasColumnName("visible")
+                    .HasDefaultValueSql("true");
+            });
+
+            modelBuilder.Entity<FoodIngredient>(entity =>
+            {
+                entity.HasKey(e => new { e.Food, e.Ingredient });
+
+                entity.ToTable("food_ingredient");
+
+                entity.Property(e => e.Food).HasColumnName("food");
+
+                entity.Property(e => e.Ingredient).HasColumnName("ingredient");
+
+                entity.HasOne(d => d.FoodNavigation)
+                    .WithMany(p => p.FoodIngredient)
+                    .HasForeignKey(d => d.Food)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("food_ingredient_food_id_fk");
+
+                entity.HasOne(d => d.IngredientNavigation)
+                    .WithMany(p => p.FoodIngredient)
+                    .HasForeignKey(d => d.Ingredient)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("food_ingredient_ingredient_id_fk");
             });
 
             modelBuilder.Entity<FoodOrder>(entity =>
@@ -155,6 +177,8 @@ namespace ItIsPizzaDay.Server
                 entity.Property(e => e.Date).HasColumnName("date");
 
                 entity.Property(e => e.Muppet).HasColumnName("muppet");
+
+                entity.Property(e => e.MuppetOld).HasColumnName("muppet_old");
 
                 entity.HasOne(d => d.MuppetNavigation)
                     .WithMany(p => p.Order)

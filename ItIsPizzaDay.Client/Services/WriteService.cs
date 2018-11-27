@@ -1,4 +1,4 @@
-namespace ItIsPizzaDay.Client
+namespace ItIsPizzaDay.Client.Services
 {
     public class WriteService
     {

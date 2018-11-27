@@ -1,13 +1,10 @@
 ﻿@page "/"
-@inherits IndexComponent
 
-<h1>Hello, Pizza!</h1>
-
+<h1>Welcome</h1>
+<h4>Benvenuti nella versione 2 dell'ultimate pizza manager. Questa versione &egrave; stata sviluppata utilizzando il framework microsoft
+    <a href="https://blazor.net">Balzor</a> che ci permette di ottenere compilati in WebAssembly</h4>
+<hr/>
+<h2>Regolamento</h2>
 <ul>
-    @foreach (var type in Types)
-    {
-        <li>@type.Description</li>
-    }
+    <li>Non si forniscono resti ai buoni pasto</li>
 </ul>
-
-<order Type="Sticazzi"></order>

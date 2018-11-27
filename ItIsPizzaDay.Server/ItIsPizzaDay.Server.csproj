@@ -16,4 +16,8 @@
       <ProjectReference Include="..\ItIsPizzaDay.Shared\ItIsPizzaDay.Shared.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Controllers\WriteControllers" />
+    </ItemGroup>
+
 </Project>

@@ -1,7 +1,7 @@
-INSERT INTO public.type (id, description) VALUES ('2ee7bc5b-1ec1-4e4b-b457-1206fd1cbdd3', 'Pizzeria');
-INSERT INTO public.type (id, description) VALUES ('11245cbf-994c-49f9-a257-d565540009d4', 'Restaurant');
-INSERT INTO public.type (id, description) VALUES ('14b9896f-9e6f-41e3-a006-cda203c72fd0', 'Bakery');
-INSERT INTO public.type (id, description) VALUES ('9dbd90e1-911a-48e1-a1bd-c9e8c969d527', 'SubShop');
+INSERT INTO public.type (id, description, priority) VALUES ('2ee7bc5b-1ec1-4e4b-b457-1206fd1cbdd3', 'Pizzeria', 1);
+INSERT INTO public.type (id, description, priority) VALUES ('11245cbf-994c-49f9-a257-d565540009d4', 'Restaurant', 2);
+INSERT INTO public.type (id, description, priority) VALUES ('14b9896f-9e6f-41e3-a006-cda203c72fd0', 'Bakery', 2);
+INSERT INTO public.type (id, description, priority) VALUES ('9dbd90e1-911a-48e1-a1bd-c9e8c969d527', 'SubShop', 2);
 
 INSERT INTO food(id, name, price, visible, type) VALUES ('82322b89-f2bf-44fc-bf9b-0f705ba6383a', 'Salmone', 8.00, true, '2ee7bc5b-1ec1-4e4b-b457-1206fd1cbdd3');
 INSERT INTO food(id, name, price, visible, type) VALUES ('85a18247-66d3-485a-830f-0e9caef0a275', 'Tris di Funghi', 8.00, true, '2ee7bc5b-1ec1-4e4b-b457-1206fd1cbdd3');

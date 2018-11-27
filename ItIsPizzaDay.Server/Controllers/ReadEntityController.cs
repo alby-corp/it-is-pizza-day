@@ -3,23 +3,21 @@ namespace ItIsPizzaDay.Server.Controllers
     using System;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore;
-    using Shared.Abstract;
+    using Repositories.Structure;
 
     public abstract class ReadEntityController<TEntity> : DefaultController
-        where TEntity : class, IEntity, new()
     {
-        private readonly QueenMargheritaContext _context;
+        private readonly IReadRepository<TEntity> _repository;
 
-        protected ReadEntityController(QueenMargheritaContext context)
+        protected ReadEntityController(IReadRepository<TEntity> repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         [HttpGet]
         public virtual async Task<IActionResult> Get(Guid id)
         {
-            var entity = await _context.FindAsync<TEntity>(id);
+            var entity = await _repository.Get(id);
 
             if (entity == null)
             {
@@ -30,6 +28,6 @@ namespace ItIsPizzaDay.Server.Controllers
         }
 
         [HttpGet]
-        public virtual async Task<IActionResult> GetAll() => Ok(await _context.Set<TEntity>().ToListAsync());
+        public virtual IActionResult GetAll() => Ok(_repository.GetAll());
     }
 }

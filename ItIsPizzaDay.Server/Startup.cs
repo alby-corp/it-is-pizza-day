@@ -1,14 +1,16 @@
-using Microsoft.AspNetCore.Blazor.Server;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.Extensions.DependencyInjection;
-using System.Linq;
-using System.Net.Mime;
-
 namespace ItIsPizzaDay.Server
 {
+    using System.Linq;
+    using System.Net.Mime;
+    using Microsoft.AspNetCore.Blazor.Server;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.ResponseCompression;
+    using Microsoft.Extensions.DependencyInjection;
+    using Middlewares;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Serialization;
 
     public class Startup
     {
@@ -18,16 +20,23 @@ namespace ItIsPizzaDay.Server
         {
             services
                 .AddMvc()
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            
+
             services.AddDbContext<QueenMargheritaContext>();
+
+            services.AddRepositories();
 
             services.AddResponseCompression(options =>
             {
                 options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[]
                 {
                     MediaTypeNames.Application.Octet,
-                    WasmMediaTypeNames.Application.Wasm,
+                    WasmMediaTypeNames.Application.Wasm
                 });
             });
         }
@@ -46,7 +55,7 @@ namespace ItIsPizzaDay.Server
             {
                 api.UseMvc(routes =>
                 {
-                    routes.MapRoute(name: "default", template: "{controller}/{action}/{id?}");
+                    routes.MapRoute("default", "{controller}/{action}/{id?}");
                 });
             });
 

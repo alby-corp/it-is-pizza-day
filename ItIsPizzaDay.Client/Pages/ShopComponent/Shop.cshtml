@@ -1,0 +1,27 @@
+@page "/shop"
+
+@inherits ShopComponent
+
+<h1>Shops</h1>
+
+<table>
+    @foreach (var type in Types)
+    {
+        <h2>@type.Description</h2>
+        <ul class="list-group">
+            @foreach (var food in type.Food)
+            {
+                <li class="list-group-item justify-content-between align-items-center w-100">
+                    <div class="d-flex w-100">
+                        <span class="oi oi-plus "></span>
+                        <span class="px-3">@food.Name</span>
+                        <span class="badge badge-info badge-pill">@food.Price &euro;</span>
+                    </div>
+                    <div>
+                        <waiter Food="@food"></waiter>
+                    </div>
+                </li>
+            }
+        </ul>
+    }
+</table>

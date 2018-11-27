@@ -7,5 +7,7 @@ namespace ItIsPizzaDay.Client.Services
     public interface IReadService
     {
         Task<IEnumerable<Type>> Types();
+
+        Task<IEnumerable<Food>> Foods();
     }
 }

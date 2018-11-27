@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using Abstract;
 
-    public partial class Type : IEntity
+    public class Type : IEntity
     {
         public Type()
         {

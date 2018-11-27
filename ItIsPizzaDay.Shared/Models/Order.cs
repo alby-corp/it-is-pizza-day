@@ -2,9 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
-    using Abstract;
 
-    public partial class Order : IEntity
+    public partial class Order
     {
         public Order()
         {
@@ -12,8 +11,9 @@
         }
 
         public Guid Id { get; set; }
-        public Guid Muppet { get; set; }
+        public Guid? MuppetOld { get; set; }
         public DateTime? Date { get; set; }
+        public Guid Muppet { get; set; }
 
         public Muppet MuppetNavigation { get; set; }
         public ICollection<FoodOrder> FoodOrder { get; set; }
