@@ -21,6 +21,8 @@ namespace ItIsPizzaDay.Client.Services
 
         public Task<IEnumerable<FoodType>> Types() => GetAsync<FoodType>();
 
+        public Task<IEnumerable<Ingredient>> Ingredients() => GetAsync<Ingredient>();
+
         public Task<IEnumerable<Food>> Foods() => GetAsync<Food>();
 
         private Task<IEnumerable<T>> GetAsync<T>() => _http.GetJsonAsync<IEnumerable<T>>($@"{_baseUrl}/{typeof(T).Name}/GetAll");

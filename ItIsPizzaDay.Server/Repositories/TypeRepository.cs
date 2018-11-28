@@ -13,8 +13,8 @@ namespace ItIsPizzaDay.Server.Repositories
         }
 
         protected override IQueryable<Type> _selector(IQueryable<Type> selector) => selector
-            .Include(type => type.Food);
-//            .ThenInclude(food => food.FoodIngredient)
-//            .ThenInclude(fi => fi.IngredientNavigation);
+            .Include(type => type.Food)
+            .ThenInclude(food => food.FoodIngredient)
+            .ThenInclude(fi => fi.IngredientNavigation);
     }
 }

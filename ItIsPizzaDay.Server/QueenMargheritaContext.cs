@@ -58,11 +58,19 @@
                     .HasForeignKey(d => d.Type)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("food_type_fkey");
+                
+                entity.HasMany(d => d.FoodIngredient)
+                    .WithOne()
+                    .HasForeignKey(d => d.Food)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("food_ingredient_food_id_fk");
 
                 entity.Property(e => e.Visible)
                     .IsRequired()
                     .HasColumnName("visible")
                     .HasDefaultValueSql("true");
+
+                entity.HasQueryFilter(food => food.Visible);
             });
 
             modelBuilder.Entity<FoodIngredient>(entity =>
@@ -75,14 +83,8 @@
 
                 entity.Property(e => e.Ingredient).HasColumnName("ingredient");
 
-                entity.HasOne(d => d.FoodNavigation)
-                    .WithMany(p => p.FoodIngredient)
-                    .HasForeignKey(d => d.Food)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("food_ingredient_food_id_fk");
-
                 entity.HasOne(d => d.IngredientNavigation)
-                    .WithMany(p => p.FoodIngredient)
+                    .WithMany()
                     .HasForeignKey(d => d.Ingredient)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("food_ingredient_ingredient_id_fk");

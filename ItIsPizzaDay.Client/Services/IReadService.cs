@@ -8,6 +8,8 @@ namespace ItIsPizzaDay.Client.Services
     {
         Task<IEnumerable<Type>> Types();
 
+        Task<IEnumerable<Ingredient>> Ingredients();
+
         Task<IEnumerable<Food>> Foods();
     }
 }

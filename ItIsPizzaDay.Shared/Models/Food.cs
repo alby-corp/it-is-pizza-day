@@ -15,7 +15,7 @@
         public Guid Id { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
-        public bool? Visible { get; set; }
+        public bool Visible { get; set; }
         public Guid Type { get; set; }
         
         public Type TypeNavigation { get; set; }

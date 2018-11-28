@@ -1,6 +1,7 @@
 namespace ItIsPizzaDay.Server.Repositories
 {
     using System.Linq;
+    using Microsoft.EntityFrameworkCore;
     using Shared.Models;
     using Structure;
 
@@ -11,9 +12,9 @@ namespace ItIsPizzaDay.Server.Repositories
         {
         }
 
-        protected override IQueryable<Food> _selector(IQueryable<Food> selector) => selector;
-
-//            .Include(food => food.FoodIngredient)
-//            .ThenInclude(fi => fi.IngredientNavigation);
+        protected override IQueryable<Food> _selector(IQueryable<Food> selector) => selector
+            .Include(food => food.FoodIngredient)
+            .ThenInclude(fi => fi.IngredientNavigation)
+        ;
     }
 }

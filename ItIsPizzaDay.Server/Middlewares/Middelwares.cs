@@ -9,6 +9,7 @@ namespace ItIsPizzaDay.Server.Middlewares
         {
             services.AddScoped<TypeRepository>();
             services.AddScoped<FoodRepository>();
+            services.AddScoped<IngredientRepository>();
         }
     }
 }

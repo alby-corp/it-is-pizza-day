@@ -2,22 +2,25 @@
 
 <form>
     <div class="form-group">
-        <label for="supplements">Email address</label>
-        <select class="form-control" id="supplements">
-            @foreach (var supplement in Food.Name)
+        <label for="removals">Rimozioni</label>
+        <select class="form-control" id="removals" multiple>
+            <option value="@Guid.Empty"></option>
+            @foreach (var removals in Food.FoodIngredient.OrderBy(fi => fi.IngredientNavigation.Name))
             {
-                <option></option>
+                <option>@removals.IngredientNavigation.Name - @removals.IngredientNavigation.Price &euro; </option>
             }
         </select>
     </div>
     <div class="form-group">
-        <label for="removals">Example select</label>
-        <select class="form-control" id="removals">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
+        <label for="supplements">Supplementi</label>
+        <select class="form-control" id="supplements" multiple>
+            <option value="@Guid.Empty"></option>
+            @foreach (var ingredient in Ingredients.OrderBy(i => i.Name))
+            {
+                <option>@ingredient.Name - @ingredient.Price &euro;</option>
+            }
         </select>
     </div>
+    <input type="button" class="btn btn-outline-success" value="Ordina Subito"/>
+    <input type="button" class="btn btn-outline-primary" value="Aggiungi al Carrello"/>
 </form>
