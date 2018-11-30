@@ -20,6 +20,8 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
 
         protected decimal TotalPrice() => OrderIngredients.Except(Food.FoodIngredient.Select(fi => fi.IngredientNavigation)).Sum(i => i.Price ?? 0) + Food.Price;
 
+        protected string Filter { get; set; } = "";
+
         protected override void OnParametersSet()
         {
             FoodOrder.FoodNavigation = Food;

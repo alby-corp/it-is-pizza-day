@@ -16,8 +16,14 @@
             </ul>
             <br/>
             <h5 class="card-subtitle mb-2 text-muted">Supplementi</h5>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Search</span>
+                </div>
+                <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search" bind="@Filter" />
+            </div>
             <ul class="list-group list-group-flush">
-                @foreach (var supplement in Ingredients.OrderBy(i => i.Name))
+                @foreach (var supplement in Ingredients.Where(ingredient => ingredient.Name.ToUpper().Contains(Filter.ToUpper())).OrderBy(i => i.Name))
                 {
                     <li class="list-group-item ingredient-add-li" onclick=@(_ => Add(supplement)) title="Aggiungi Ingrediente!">
                         @supplement.Name - @supplement.Price?.ToString("N2") &euro;<span class="oi oi-plus float-right" data-toggle="tooltip" aria-hidden="true"></span>
