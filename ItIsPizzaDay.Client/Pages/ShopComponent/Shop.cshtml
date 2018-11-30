@@ -3,25 +3,31 @@
 @inherits ShopComponent
 
 <h1>Shops</h1>
-
-<table>
-    @foreach (var type in Types)
-    {
-        <h2>@type.Description</h2>
-        <ul class="list-group">
-            @foreach (var food in type.Food)
+<div class="row">
+    <table class="col-6">
+        @foreach (var type in Types)
+        {
+            <h2>@type.Description</h2>
+            foreach (var food in type.Food)
             {
-                <li class="list-group-item justify-content-between align-items-center w-100">
-                    <div class="d-flex w-100">
-                        <span class="oi oi-plus "></span>
-                        <span class="px-3">@food.Name</span>
-                        <span class="badge badge-info badge-pill">@food.Price &euro;</span>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@food.Name - @food.Price.ToString("N2") &euro;</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">@string.Join(", ", food.FoodIngredient.Select(fi => fi.IngredientNavigation.Name))</h6>
+                        <a onclick="@{ () => SetFood(food) }" class="btn btn-outline-dark">Ordina Subito</a>
+                        <a onclick="@{ () => SetFood(food) }" class="btn btn-outline-dark">Aggiungi al Carrello</a>
+                        <a onclick="@{ () => SetFood(food) }" class="btn btn-outline-dark">Modifica</a>
                     </div>
-                    <div>
-                        <waiter Food="@food" Ingredients="@Ingredients"></waiter>
-                    </div>
-                </li>
+                </div>
+                <br \>
             }
-        </ul>
-    }
-</table>
+        }
+    </table>
+
+    <div class="col-4">
+        @if (Food != null)
+        {
+            <waiter Ingredients="@Ingredients" Food="@Food"></waiter>
+        }
+    </div>
+</div>

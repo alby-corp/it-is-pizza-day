@@ -2,9 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
-    using Abstract;
 
-    public partial class Food : IEntity
+    public partial class Food : Entity
     {
         public Food()
         {
@@ -12,7 +11,6 @@
             FoodOrder = new HashSet<FoodOrder>();
         }
 
-        public Guid Id { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
         public bool Visible { get; set; }

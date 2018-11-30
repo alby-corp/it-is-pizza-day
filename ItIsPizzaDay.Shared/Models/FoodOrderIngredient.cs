@@ -2,9 +2,8 @@
 {
     using System;
 
-    public partial class FoodOrderIngredient
+    public partial class FoodOrderIngredient : Entity
     {
-        public Guid Id { get; set; }
         public Guid FoodOrder { get; set; }
         public Guid Ingredient { get; set; }
         public bool Isremoval { get; set; }

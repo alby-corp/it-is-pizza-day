@@ -3,15 +3,13 @@
     using System;
     using System.Collections.Generic;
 
-    public partial class Order
+    public partial class Order : Entity
     {
         public Order()
         {
             FoodOrder = new HashSet<FoodOrder>();
         }
 
-        public Guid Id { get; set; }
-        public Guid? MuppetOld { get; set; }
         public DateTime? Date { get; set; }
         public Guid Muppet { get; set; }
 

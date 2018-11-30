@@ -1,4 +1,4 @@
-namespace ItIsPizzaDay.Client.Pages
+namespace ItIsPizzaDay.Client.Pages.CartComponent
 {
     using Microsoft.AspNetCore.Blazor.Components;
 

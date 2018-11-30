@@ -180,8 +180,6 @@
 
                 entity.Property(e => e.Muppet).HasColumnName("muppet");
 
-                entity.Property(e => e.MuppetOld).HasColumnName("muppet_old");
-
                 entity.HasOne(d => d.MuppetNavigation)
                     .WithMany(p => p.Order)
                     .HasForeignKey(d => d.Muppet)

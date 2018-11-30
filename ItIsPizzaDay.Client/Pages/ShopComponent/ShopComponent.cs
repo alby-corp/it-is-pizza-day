@@ -13,13 +13,19 @@ namespace ItIsPizzaDay.Client.Pages.ShopComponent
         [Inject]
         private IReadService Reader { get; set; }
 
-        protected IEnumerable<FoodType> Types { get; private set; } = new List<FoodType>();
-        protected IEnumerable<Ingredient> Ingredients { get; private set; } = new List<Ingredient>();
+        protected ICollection<FoodType> Types { get; private set; } = new List<FoodType>();
+        protected ICollection<Ingredient> Ingredients { get; private set; } = new List<Ingredient>();
+        protected Food Food { get; private set; } = null;
 
         protected override async Task OnParametersSetAsync()
         {
             Types = (await Reader.Types()).ToList();
-            Ingredients = (await Reader.Ingredients()).ToList();
+            Ingredients = (await Reader.Ingredients()).OrderBy(i => i.Name).ToList();
+        }
+
+        protected void SetFood(Food food)
+        {
+            Food = food;
         }
     }
 }

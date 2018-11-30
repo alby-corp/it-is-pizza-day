@@ -1,26 +1,29 @@
 @inherits WaiterComponent
 
-<form>
-    <div class="form-group">
-        <label for="removals">Rimozioni</label>
-        <select class="form-control" id="removals" multiple>
-            <option value="@Guid.Empty"></option>
-            @foreach (var removals in Food.FoodIngredient.OrderBy(fi => fi.IngredientNavigation.Name))
-            {
-                <option>@removals.IngredientNavigation.Name - @removals.IngredientNavigation.Price &euro; </option>
-            }
-        </select>
+<div class="card">
+    <div class="card-body">
+        <h3 class="card-title">@Food.Name - @TotalPrice().ToString("N2") &euro;</h3>
+        <h4 class="card-subtitle mb-2 text-muted">@string.Join(", ", OrderIngredients.OrderBy(i => i.Name).Select(i => i.Name))</h4>
+        <div class="card-body">
+            <h5 class="card-subtitle mb-2 text-muted">Rimozioni</h5>
+            <ul class="list-group list-group-flush">
+                @foreach (var ingredient in OrderIngredients.OrderBy(i => i.Name))
+                {
+                    <li class="list-group-item ingredient-remove-li" onclick=@(_ => Remove(ingredient)) title="Rimuovi Ingrediente!">
+                        @ingredient.Name <span class="oi oi-minus float-right" data-toggle="tooltip" aria-hidden="true"></span>
+                    </li>
+                }
+            </ul>
+            <br/>
+            <h5 class="card-subtitle mb-2 text-muted">Supplementi</h5>
+            <ul class="list-group list-group-flush">
+                @foreach (var supplement in Ingredients.OrderBy(i => i.Name))
+                {
+                    <li class="list-group-item ingredient-add-li" onclick=@(_ => Add(supplement)) title="Aggiungi Ingrediente!">
+                        @supplement.Name - @supplement.Price?.ToString("N2") &euro;<span class="oi oi-plus float-right" data-toggle="tooltip" aria-hidden="true"></span>
+                    </li>
+                }
+            </ul>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="supplements">Supplementi</label>
-        <select class="form-control" id="supplements" multiple>
-            <option value="@Guid.Empty"></option>
-            @foreach (var ingredient in Ingredients.OrderBy(i => i.Name))
-            {
-                <option>@ingredient.Name - @ingredient.Price &euro;</option>
-            }
-        </select>
-    </div>
-    <input type="button" class="btn btn-outline-success" value="Ordina Subito"/>
-    <input type="button" class="btn btn-outline-primary" value="Aggiungi al Carrello"/>
-</form>
+</div>

@@ -23,7 +23,7 @@ namespace ItIsPizzaDay.Server.Repositories.Structure
             var entity = await _context.FindAsync<TEntity>(id);
 
             return entity;
-        }
+        } 
 
         public IQueryable<TEntity> GetAll() => _selector(_context.Set<TEntity>());
     }
