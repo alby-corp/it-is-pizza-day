@@ -1,3 +1,5 @@
+
+// ReSharper disable NonReadonlyMemberInGetHashCode
 namespace ItIsPizzaDay.Shared.Models
 {
     using System;
@@ -5,7 +7,9 @@ namespace ItIsPizzaDay.Shared.Models
 
     public class Entity : IEntity
     {
-        protected bool Equals(Entity other) => Id.Equals(other.Id);
+        public Guid Id { get; set; }
+
+        private bool Equals(IEntity other) => Id.Equals(other.Id);
 
         public override bool Equals(object obj)
         {
@@ -28,6 +32,5 @@ namespace ItIsPizzaDay.Shared.Models
 
         public static bool operator !=(Entity left, Entity right) => !Equals(left, right);
 
-        public Guid Id { get; set; }
     }
 }

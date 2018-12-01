@@ -14,20 +14,13 @@
                     <div class="card-body">
                         <h5 class="card-title">@food.Name - @food.Price.ToString("N2") &euro;</h5>
                         <h6 class="card-subtitle mb-2 text-muted">@string.Join(", ", food.FoodIngredient.Select(fi => fi.IngredientNavigation.Name))</h6>
-                        <a onclick="@{ () => SetFood(food) }" class="btn btn-outline-dark">Ordina Subito</a>
-                        <a onclick="@{ () => SetFood(food) }" class="btn btn-outline-dark">Aggiungi al Carrello</a>
-                        <a onclick="@{ () => SetFood(food) }" class="btn btn-outline-dark">Modifica</a>
+                        <a onclick="" class="btn btn-outline-dark">Ordina Subito</a>
+                        <a onclick="" class="btn btn-outline-dark">Aggiungi al Carrello</a>
+                        <NavLink href="@($"/shop/{food.Id}")" class="btn btn-outline-dark">Modifica</navlink>
                     </div>
                 </div>
                 <br \>
             }
         }
     </table>
-
-    <div class="col-4">
-        @if (Food != null)
-        {
-            <waiter Ingredients="@Ingredients" Food="@Food"></waiter>
-        }
-    </div>
 </div>

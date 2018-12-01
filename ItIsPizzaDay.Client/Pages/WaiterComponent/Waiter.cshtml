@@ -2,26 +2,35 @@
 
 <div class="card">
     <div class="card-body">
-        <h3 class="card-title">@Food.Name - @TotalPrice().ToString("N2") &euro;</h3>
-        <h4 class="card-subtitle mb-2 text-muted">@string.Join(", ", OrderIngredients.OrderBy(i => i.Name).Select(i => i.Name))</h4>
+
+        <h3 class="card-title">@OrderFood.FoodNavigation.Name - @TotalPrice.ToString("N2") &euro;</h3>
+        <h4 class="card-subtitle mb-2 text-muted">@string.Join(", ", OrderIngredients.Select(i => i.Name))</h4>
+
         <div class="card-body">
+
             <h5 class="card-subtitle mb-2 text-muted">Rimozioni</h5>
             <ul class="list-group list-group-flush">
-                @foreach (var ingredient in OrderIngredients.OrderBy(i => i.Name))
+
+                @foreach (var ingredient in OrderIngredients)
                 {
                     <li class="list-group-item ingredient-remove-li" onclick=@(_ => Remove(ingredient)) title="Rimuovi Ingrediente!">
                         @ingredient.Name <span class="oi oi-minus float-right" data-toggle="tooltip" aria-hidden="true"></span>
                     </li>
                 }
+
             </ul>
+
             <br/>
+
             <h5 class="card-subtitle mb-2 text-muted">Supplementi</h5>
+
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1">Search</span>
+                    <span class="input-group-text" id="filter">Search</span>
                 </div>
-                <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search" bind="@Filter" />
+                <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search" bind="@Filter"/>
             </div>
+
             <ul class="list-group list-group-flush">
                 @foreach (var supplement in Ingredients.Where(ingredient => ingredient.Name.ToUpper().Contains(Filter.ToUpper())).OrderBy(i => i.Name))
                 {
@@ -30,6 +39,7 @@
                     </li>
                 }
             </ul>
+
         </div>
     </div>
 </div>

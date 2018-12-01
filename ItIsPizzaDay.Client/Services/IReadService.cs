@@ -1,15 +1,18 @@
 namespace ItIsPizzaDay.Client.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using ItIsPizzaDay.Shared.Models;
 
     public interface IReadService
     {
-        Task<IEnumerable<Type>> Types();
+        Task<ICollection<ItIsPizzaDay.Shared.Models.Type>> Types();
 
-        Task<IEnumerable<Ingredient>> Ingredients();
+        Task<ICollection<Ingredient>> Ingredients();
 
-        Task<IEnumerable<Food>> Foods();
+        Task<Food> Food(Guid id);
+
+        Task<ICollection<Food>> Foods();
     }
 }

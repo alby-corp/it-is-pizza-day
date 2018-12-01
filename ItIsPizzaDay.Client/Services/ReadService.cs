@@ -2,6 +2,7 @@ namespace ItIsPizzaDay.Client.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
     using ItIsPizzaDay.Shared.Models;
@@ -19,12 +20,16 @@ namespace ItIsPizzaDay.Client.Services
             _baseUrl = new Uri($"{baseUrl}/api");
         }
 
-        public Task<IEnumerable<FoodType>> Types() => GetAsync<FoodType>();
+        public Task<ICollection<FoodType>> Types() => GetAllAsync<FoodType>();
 
-        public Task<IEnumerable<Ingredient>> Ingredients() => GetAsync<Ingredient>();
+        public Task<ICollection<Ingredient>> Ingredients() => GetAllAsync<Ingredient>();
 
-        public Task<IEnumerable<Food>> Foods() => GetAsync<Food>();
+        public Task<Food> Food(Guid id) => GetAsync<Food>(id);
 
-        private Task<IEnumerable<T>> GetAsync<T>() => _http.GetJsonAsync<IEnumerable<T>>($@"{_baseUrl}/{typeof(T).Name}/GetAll");
+        public Task<ICollection<Food>> Foods() => GetAllAsync<Food>();
+
+        private async Task<T> GetAsync<T>(Guid id) => await _http.GetJsonAsync<T>($@"{_baseUrl}/{typeof(T).Name}/Get/{id}");
+
+        private async Task<ICollection<T>> GetAllAsync<T>() => (await _http.GetJsonAsync<ICollection<T>>($@"{_baseUrl}/{typeof(T).Name}/GetAll")).ToList();
     }
 }
