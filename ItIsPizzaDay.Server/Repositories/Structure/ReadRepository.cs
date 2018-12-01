@@ -1,8 +1,10 @@
 namespace ItIsPizzaDay.Server.Repositories.Structure
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Microsoft.EntityFrameworkCore;
     using Shared.Abstract;
 
     public abstract class ReadRepository<TEntity> : IReadRepository<TEntity>
@@ -13,18 +15,15 @@ namespace ItIsPizzaDay.Server.Repositories.Structure
 
         protected abstract IQueryable<TEntity> _selector(IQueryable<TEntity> selector);
 
+        private IQueryable<TEntity> GetEntities() => _selector(_context.Set<TEntity>());
+
         protected ReadRepository(QueenMargheritaContext context)
         {
             _context = context;
         }
 
-        public async Task<TEntity> Get(Guid id)
-        {
-            var entity = await _context.FindAsync<TEntity>(id);
+        public Task<TEntity> Get(Guid id) => GetEntities().FirstOrDefaultAsync(e => e.Id == id);
 
-            return entity;
-        } 
-
-        public IQueryable<TEntity> GetAll() => _selector(_context.Set<TEntity>());
+        public Task<List<TEntity>> GetAll() => GetEntities().ToListAsync();
     }
 }

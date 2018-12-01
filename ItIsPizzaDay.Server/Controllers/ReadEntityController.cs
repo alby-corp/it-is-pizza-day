@@ -28,6 +28,6 @@ namespace ItIsPizzaDay.Server.Controllers
         }
 
         [HttpGet]
-        public virtual IActionResult GetAll() => Ok(_repository.GetAll());
+        public virtual async Task<IActionResult> GetAll() => Ok(await _repository.GetAll());
     }
 }
