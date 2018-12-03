@@ -29,5 +29,13 @@ namespace ItIsPizzaDay.Client.Services
 
             _subject.OnNext(foodsOrder);
         }
+
+        public void Delete(Guid id)
+        {
+            var foodsOrder = Value.ToList();
+            foodsOrder.Remove(new FoodOrder { Id = id });
+
+            _subject.OnNext(foodsOrder);
+        }
     }
 }

@@ -11,6 +11,7 @@
         <th scope="col">Supplementi</th>
         <th scope="col">Rimozioni</th>
         <th scope="col">Prezzo</th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -39,8 +40,10 @@
             <td>
                 @((item.value.FoodOrderIngredient.Where(i => !i.Isremoval).Sum(i => i.IngredientNavigation.Price ?? 0) + item.value.FoodNavigation.Price).ToString("N2")) &euro;
             </td>
+            <td>
+                <input type="button" class="btn btn-danger" value="Elimina" onclick=@(_ => Delete(item.value.Id))/>
+            </td>
         </tr>
     }
     </tbody>
-
 </table>

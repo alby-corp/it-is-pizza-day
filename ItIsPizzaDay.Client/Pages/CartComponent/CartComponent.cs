@@ -1,5 +1,6 @@
 namespace ItIsPizzaDay.Client.Pages.CartComponent
 {
+    using System;
     using System.Collections.Generic;
     using ItIsPizzaDay.Shared.Models;
     using Microsoft.AspNetCore.Blazor.Components;
@@ -15,6 +16,11 @@ namespace ItIsPizzaDay.Client.Pages.CartComponent
         protected override void OnInit()
         {
             CartService.Subscribe(foodOrder => FoodOrder = foodOrder);
+        }
+
+        protected void Delete(Guid id)
+        {
+            CartService.Delete(id);
         }
     }
 }
