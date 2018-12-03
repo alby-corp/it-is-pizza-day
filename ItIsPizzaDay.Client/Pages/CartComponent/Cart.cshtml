@@ -1,0 +1,46 @@
+@page "/cart"
+@inherits CartComponent
+
+<h1>Carrello</h1>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Ordine</th>
+        <th scope="col">Supplementi</th>
+        <th scope="col">Rimozioni</th>
+        <th scope="col">Prezzo</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    @foreach (var item in FoodOrder.Select((value, i) => new { i, value }))
+    {
+        <tr>
+            <th scope="row">@item.i</th>
+            <td>@item.value.FoodNavigation.Name</td>
+            <td>
+                <ul>
+                    @foreach (var ingredient in item.value.FoodOrderIngredient.Where(i => !i.Isremoval))
+                    {
+                        <li>@ingredient.IngredientNavigation.Name</li>
+                    }
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    @foreach (var ingredient in item.value.FoodOrderIngredient.Where(i => i.Isremoval))
+                    {
+                        <li>@ingredient.IngredientNavigation.Name</li>
+                    }
+                </ul>
+            </td>
+            <td>
+                @((item.value.FoodOrderIngredient.Where(i => !i.Isremoval).Sum(i => i.IngredientNavigation.Price ?? 0) + item.value.FoodNavigation.Price).ToString("N2")) &euro;
+            </td>
+        </tr>
+    }
+    </tbody>
+
+</table>

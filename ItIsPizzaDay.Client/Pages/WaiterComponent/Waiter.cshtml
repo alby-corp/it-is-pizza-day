@@ -3,15 +3,22 @@
 <div class="card">
     <div class="card-body">
 
-        <h3 class="card-title">@OrderFood.FoodNavigation.Name - @TotalPrice.ToString("N2") &euro;</h3>
-        <h4 class="card-subtitle mb-2 text-muted">@string.Join(", ", OrderIngredients.Select(i => i.Name))</h4>
+        <h3 class="card-title">@Food.Name - @TotalPrice.ToString("N2") &euro;</h3>
+        <h4 class="card-subtitle mb-2 text-muted">@string.Join(", ", CustomIngredients.Select(i => i.Name))</h4>
 
+        <br />
+        
+        <button class="btn btn-outline-dark" onclick="@OrderNow">Ordina Subito</button>
+        <button class="btn btn-outline-dark" onclick="@AddToCart">Aggiungi al Carrello</button>
+        
+        <br />
+        
         <div class="card-body">
 
             <h5 class="card-subtitle mb-2 text-muted">Rimozioni</h5>
             <ul class="list-group list-group-flush">
 
-                @foreach (var ingredient in OrderIngredients)
+                @foreach (var ingredient in CustomIngredients)
                 {
                     <li class="list-group-item ingredient-remove-li" onclick=@(_ => Remove(ingredient)) title="Rimuovi Ingrediente!">
                         @ingredient.Name <span class="oi oi-minus float-right" data-toggle="tooltip" aria-hidden="true"></span>

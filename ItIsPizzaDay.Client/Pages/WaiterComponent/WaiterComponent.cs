@@ -5,71 +5,86 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
     using System.Linq;
     using ItIsPizzaDay.Shared.Models;
     using Microsoft.AspNetCore.Blazor.Components;
+    using Microsoft.AspNetCore.Blazor.Services;
+    using Services;
 
     public class WaiterComponent : BlazorComponent
     {
+        [Inject]
+        private IUriHelper UriHelper { get; set; }
+
+        [Inject]
+        private CartService CartService { get; set; }
+
+        [Parameter]
+        protected Food Food { get; set; } = new Food();
+
         [Parameter]
         protected ICollection<Ingredient> Ingredients { get; private set; } = new List<Ingredient>();
 
-        [Parameter]
-        private Food Food { get; set; } = new Food();
+        protected ICollection<Ingredient> CustomIngredients { get; private set; } = new List<Ingredient>();
 
-        protected FoodOrder OrderFood { get; } = new FoodOrder();
+        protected ICollection<Ingredient> OriginalIngredients { get; private set; } = new List<Ingredient>();
 
-        protected IEnumerable<Ingredient> OrderIngredients => OrderFood.FoodNavigation.FoodIngredient.Select(fi => fi.IngredientNavigation).OrderBy(i => i.Name).ToList();
+        protected decimal TotalPrice => CustomIngredients.Except(Food.FoodIngredient.Select(fi => fi.IngredientNavigation)).Sum(i => i.Price ?? 0) + Food.Price;
 
-        protected decimal TotalPrice
-        {
-            get
-            {
-                Console.WriteLine("I WAS CALL");
-
-                foreach (var i in OrderIngredients.OrderBy(i => i.Name))
-                {
-                    Console.WriteLine($"OrderIngredient {i.Name}");
-                }
-
-                foreach (var i in Food.FoodIngredient.Select(fi => fi.IngredientNavigation).OrderBy(i => i.Name))
-                {
-                    Console.WriteLine($"FoodIngredient {i.Name}");
-                }
-
-                return OrderIngredients.Except(Food.FoodIngredient.Select(fi => fi.IngredientNavigation)).Sum(i => i.Price ?? 0) + Food.Price;
-            }
-        }
-
-        protected string Filter { get; set; } = "";
+        protected string Filter { get; set; } = string.Empty;
 
         protected override void OnParametersSet()
         {
-            SetOrderFood();
-
-            Ingredients = Ingredients.Except(OrderFood.FoodNavigation.FoodIngredient.Select(fi => fi.IngredientNavigation)).ToList();
+            OriginalIngredients = Food.FoodIngredient.Select(fi => fi.IngredientNavigation).ToList();
+            CustomIngredients = OriginalIngredients.ToList();
+            Ingredients = Ingredients.Except(OriginalIngredients.ToList()).ToList();
         }
 
         protected void Add(Ingredient ingredient)
         {
-            OrderFood.FoodNavigation.FoodIngredient.Add(GetFoodIngredient(ingredient));
+            CustomIngredients.Add(ingredient);
+
             Ingredients.Remove(ingredient);
         }
 
         protected void Remove(Ingredient ingredient)
         {
-            OrderFood.FoodNavigation.FoodIngredient.Remove(GetFoodIngredient(ingredient));
+            CustomIngredients.Remove(ingredient);
+
             Ingredients.Add(ingredient);
         }
 
-        private void SetOrderFood()
+        protected void AddToCart()
         {
-            OrderFood.Food = Food.Id;
-            OrderFood.FoodNavigation = new Food { Name = Food.Name, Price = Food.Price, FoodIngredient = Food.FoodIngredient.Select(fi => fi).ToList() };
+            var guid = Guid.NewGuid();
+
+            var foodOrderIngredient = CustomIngredients.Except(OriginalIngredients).Select(ingredient => new FoodOrderIngredient
+            {
+                IngredientNavigation = ingredient,
+                Isremoval = false,
+                Id = Guid.NewGuid()
+            }).ToList();
+
+            foodOrderIngredient.AddRange(OriginalIngredients.Except(CustomIngredients).Select(ingredient => new FoodOrderIngredient
+            {
+                IngredientNavigation = ingredient,
+                Isremoval = true,
+                Id = Guid.NewGuid()
+            }).ToList());
+
+            var foodOrder = new FoodOrder
+            {
+                Id = guid,
+                Food = Food.Id,
+                FoodNavigation = Food,
+                FoodOrderIngredient = foodOrderIngredient
+            };
+
+            CartService.Add(foodOrder);
+
+            UriHelper.NavigateTo("/cart");
         }
 
-        private FoodIngredient GetFoodIngredient(Ingredient ingredient) => new FoodIngredient
+        protected void OrderNow()
         {
-            Food = Food.Id,
-            Ingredient = ingredient.Id,
-            IngredientNavigation = ingredient
-        };
+            // TODO: Call Writer Service;
+        }
     }
 }
