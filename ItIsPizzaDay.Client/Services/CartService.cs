@@ -37,5 +37,10 @@ namespace ItIsPizzaDay.Client.Services
 
             _subject.OnNext(foodsOrder);
         }
+
+        public void Clear()
+        {
+            _subject.OnNext(new List<FoodOrder>());
+        }
     }
 }

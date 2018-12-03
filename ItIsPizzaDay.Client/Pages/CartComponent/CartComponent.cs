@@ -22,5 +22,15 @@ namespace ItIsPizzaDay.Client.Pages.CartComponent
         {
             CartService.Delete(id);
         }
+
+        protected void DoOrder()
+        {
+            
+        }
+
+        protected void Clear()
+        {
+            CartService.Clear();
+        }
     }
 }
