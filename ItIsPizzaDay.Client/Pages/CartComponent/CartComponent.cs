@@ -2,6 +2,7 @@ namespace ItIsPizzaDay.Client.Pages.CartComponent
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using ItIsPizzaDay.Shared.Models;
     using Microsoft.AspNetCore.Blazor.Components;
     using Services;
@@ -15,12 +16,16 @@ namespace ItIsPizzaDay.Client.Pages.CartComponent
 
         protected override void OnInit()
         {
-            CartService.Subscribe(foodOrder => FoodOrder = foodOrder);
+            CartService.Subscribe(foodOrder =>
+            {
+                FoodOrder = foodOrder;
+                StateHasChanged();
+            });
         }
 
-        protected void Delete(Guid id)
+        protected async Task Delete(Guid id)
         {
-            CartService.Delete(id);
+            await CartService.Delete(id);
         }
 
         protected void DoOrder()
@@ -28,9 +33,9 @@ namespace ItIsPizzaDay.Client.Pages.CartComponent
             
         }
 
-        protected void Clear()
+        protected async Task Clear()
         {
-            CartService.Clear();
+            await CartService.Clear();
         }
     }
 }

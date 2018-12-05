@@ -3,6 +3,7 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using ItIsPizzaDay.Shared.Models;
     using Microsoft.AspNetCore.Blazor.Components;
     using Microsoft.AspNetCore.Blazor.Services;
@@ -51,7 +52,7 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
             Ingredients.Add(ingredient);
         }
 
-        protected void AddToCart()
+        protected async Task AddToCart()
         {
             var guid = Guid.NewGuid();
 
@@ -77,7 +78,7 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
                 FoodOrderIngredient = foodOrderIngredient
             };
 
-            CartService.Add(foodOrder);
+            await CartService.Add(foodOrder);
 
             UriHelper.NavigateTo("/cart");
         }

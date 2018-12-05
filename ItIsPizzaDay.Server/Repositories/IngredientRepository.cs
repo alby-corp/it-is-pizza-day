@@ -4,7 +4,7 @@ namespace ItIsPizzaDay.Server.Repositories
     using Shared.Models;
     using Structure;
 
-    public class IngredientRepository : ReadRepository<Ingredient>
+    public class IngredientRepository : Repository<Ingredient>
     {
         public IngredientRepository(QueenMargheritaContext context)
             : base(context)

@@ -1,9 +1,9 @@
-namespace ItIsPizzaDay.Server.Controllers.ReadControllers
+namespace ItIsPizzaDay.Server.Controllers
 {
     using Repositories;
     using Shared.Models;
 
-    public class FoodController : ReadEntityController<Food>
+    public class FoodController : EntityController<Food>
     {
         public FoodController(FoodRepository repository)
             : base(repository)

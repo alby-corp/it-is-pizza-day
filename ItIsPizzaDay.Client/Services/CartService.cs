@@ -4,43 +4,70 @@ namespace ItIsPizzaDay.Client.Services
     using System.Collections.Generic;
     using System.Linq;
     using System.Reactive.Subjects;
+    using System.Threading.Tasks;
+    using Blazor.Extensions.Storage;
     using ItIsPizzaDay.Shared.Models;
 
-    public class CartService
+    public sealed class CartService
     {
+        private const string key = "f71cf4e3-a9b1-4852-a893-9f71a6399b4b";
+        private readonly LocalStorage _localStorage;
+        private readonly Task _initialized;
+
         private readonly BehaviorSubject<IEnumerable<FoodOrder>> _subject = new BehaviorSubject<IEnumerable<FoodOrder>>(new List<FoodOrder>());
 
         public IEnumerable<FoodOrder> Value => _subject.Value;
 
-        public virtual void Subscribe(IObserver<IEnumerable<FoodOrder>> observer)
+        public CartService(LocalStorage localStorage)
+        {
+            _localStorage = localStorage;
+
+            _initialized = RepairFromStorage();
+        }
+
+        public void Subscribe(IObserver<IEnumerable<FoodOrder>> observer)
         {
             _subject.Subscribe(observer);
         }
 
-        public virtual void Subscribe(Action<IEnumerable<FoodOrder>> onNext)
+        public void Subscribe(Action<IEnumerable<FoodOrder>> onNext)
         {
             _subject.Subscribe(onNext);
         }
 
-        public void Add(FoodOrder foodOrder)
+        public async Task Add(FoodOrder foodOrder)
         {
+            await _initialized;
+
             var foodsOrder = Value.ToList();
             foodsOrder.Add(foodOrder);
 
             _subject.OnNext(foodsOrder);
+            await _localStorage.SetItem<IEnumerable<FoodOrder>>(key, foodsOrder);
         }
 
-        public void Delete(Guid id)
+        public async Task Delete(Guid id)
         {
+            await _initialized;
+
             var foodsOrder = Value.ToList();
             foodsOrder.Remove(new FoodOrder { Id = id });
 
             _subject.OnNext(foodsOrder);
+            await _localStorage.SetItem<IEnumerable<FoodOrder>>(key, foodsOrder);
         }
 
-        public void Clear()
+        public async Task Clear()
         {
             _subject.OnNext(new List<FoodOrder>());
+            await _localStorage.SetItem<IEnumerable<FoodOrder>>(key, new List<FoodOrder>());
+        }
+
+        private async Task RepairFromStorage()
+        {
+            var foodsOrder = await _localStorage.GetItem<IEnumerable<FoodOrder>>(key);
+
+            _subject.OnNext(foodsOrder ?? new List<FoodOrder>());
         }
     }
 }

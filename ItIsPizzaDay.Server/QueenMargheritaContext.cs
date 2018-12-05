@@ -1,6 +1,8 @@
 ﻿namespace ItIsPizzaDay.Server
 {
+    using Generators;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
     using Shared.Models;
 
     public partial class QueenMargheritaContext : DbContext
@@ -96,7 +98,7 @@
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Food).HasColumnName("food");
 
@@ -119,7 +121,7 @@
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.FoodOrder).HasColumnName("food_order");
 
@@ -174,9 +176,10 @@
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedOnAdd();
 
-                entity.Property(e => e.Date).HasColumnName("date");
+                entity.Property(e => e.Date).HasColumnName("date")
+                    .HasValueGenerator<DateTimeGenerator>();
 
                 entity.Property(e => e.Muppet).HasColumnName("muppet");
 
