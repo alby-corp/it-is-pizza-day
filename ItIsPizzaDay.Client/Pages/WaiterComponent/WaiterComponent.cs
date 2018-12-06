@@ -8,6 +8,7 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
     using Microsoft.AspNetCore.Blazor.Components;
     using Microsoft.AspNetCore.Blazor.Services;
     using Services;
+    using Services.Abstract;
 
     public class WaiterComponent : BlazorComponent
     {
@@ -16,6 +17,9 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
 
         [Inject]
         private CartService CartService { get; set; }
+
+        [Inject]
+        private IWriteService Writer { get; set; }
 
         [Parameter]
         protected Food Food { get; set; } = new Food();
@@ -54,38 +58,59 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
 
         protected async Task AddToCart()
         {
-            var guid = Guid.NewGuid();
-
-            var foodOrderIngredient = CustomIngredients.Except(OriginalIngredients).Select(ingredient => new FoodOrderIngredient
-            {
-                IngredientNavigation = ingredient,
-                Isremoval = false,
-                Id = Guid.NewGuid()
-            }).ToList();
-
-            foodOrderIngredient.AddRange(OriginalIngredients.Except(CustomIngredients).Select(ingredient => new FoodOrderIngredient
-            {
-                IngredientNavigation = ingredient,
-                Isremoval = true,
-                Id = Guid.NewGuid()
-            }).ToList());
-
-            var foodOrder = new FoodOrder
-            {
-                Id = guid,
-                Food = Food.Id,
-                FoodNavigation = Food,
-                FoodOrderIngredient = foodOrderIngredient
-            };
-
-            await CartService.Add(foodOrder);
+            await CartService.Add(GetFoodOrder());
 
             UriHelper.NavigateTo("/cart");
         }
 
-        protected void OrderNow()
+        private FoodOrder GetFoodOrder()
         {
-            // TODO: Call Writer Service;
+            Console.WriteLine("Get FoodOrder 1");
+            
+            var foodOrderIngredient = CustomIngredients.Except(OriginalIngredients).Select(ingredient => new FoodOrderIngredient
+            {
+                Isremoval = false,
+                Ingredient = ingredient.Id
+            }).ToList();
+
+            Console.WriteLine("Get FoodOrder 2");
+            
+            foodOrderIngredient.AddRange(OriginalIngredients.Except(CustomIngredients).Select(ingredient => new FoodOrderIngredient
+            {
+                Isremoval = true,
+                Ingredient = ingredient.Id
+            }).ToList());
+
+            Console.WriteLine("Get FoodOrder 3");
+            
+            var foodOrder = new FoodOrder
+            {
+                Food = Food.Id,
+                FoodOrderIngredient = foodOrderIngredient
+            };
+            
+            Console.WriteLine("Get FoodOrder 4");
+            
+            return foodOrder;
+        }
+
+        protected async Task OrderNow()
+        {
+            Console.WriteLine("I was called 1");
+
+            var order = new Order
+            {
+                FoodOrder = new List<FoodOrder>
+                {
+                    GetFoodOrder()
+                }
+            };
+            
+            Console.WriteLine("I was called 2");
+
+            await Writer.Order.Save(order);
+
+            Console.WriteLine("I was called 3");
         }
     }
 }

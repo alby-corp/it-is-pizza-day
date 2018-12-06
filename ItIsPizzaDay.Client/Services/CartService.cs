@@ -21,7 +21,6 @@ namespace ItIsPizzaDay.Client.Services
         public CartService(LocalStorage localStorage)
         {
             _localStorage = localStorage;
-
             _initialized = RepairFromStorage();
         }
 
@@ -54,7 +53,7 @@ namespace ItIsPizzaDay.Client.Services
             foodsOrder.Remove(new FoodOrder { Id = id });
 
             _subject.OnNext(foodsOrder);
-            await _localStorage.SetItem<IEnumerable<FoodOrder>>(key, foodsOrder);
+            await _localStorage.SetItem(key, foodsOrder.Where(fo => fo.Id != id));
         }
 
         public async Task Clear()

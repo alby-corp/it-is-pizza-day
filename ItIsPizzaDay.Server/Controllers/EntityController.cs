@@ -5,11 +5,11 @@ namespace ItIsPizzaDay.Server.Controllers
     using Microsoft.AspNetCore.Mvc;
     using Repositories.Structure;
 
-    public abstract class EntityController<TEntity> : DefaultController
+    public abstract class EntityController<T> : DefaultController
     {
-        private readonly IRepository<TEntity> _repository;
+        private readonly IRepository<T> _repository;
 
-        protected EntityController(IRepository<TEntity> repository)
+        protected EntityController(IRepository<T> repository)
         {
             _repository = repository;
         }
@@ -31,14 +31,14 @@ namespace ItIsPizzaDay.Server.Controllers
         public virtual async Task<IActionResult> GetAll() => Ok(await _repository.GetAll());
 
         [HttpPost]
-        public virtual async Task<IActionResult> Create([FromBody] TEntity entity)
+        public virtual async Task<IActionResult> Create([FromBody] T entity)
         {
             await _repository.Create(entity);
             return Ok(entity);
         }
 
         [HttpPut]
-        public virtual async Task<IActionResult> Update([FromBody] TEntity entity)
+        public virtual async Task<IActionResult> Update([FromBody] T entity)
         {
             await _repository.Update(entity);
             return Ok(entity);
