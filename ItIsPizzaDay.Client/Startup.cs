@@ -13,11 +13,11 @@ namespace ItIsPizzaDay.Client
         public void ConfigureServices(IServiceCollection services)
         {
             var baseUrl = new Uri("http://localhost:5000/api");
-            
+
+            services.AddStorage();
             services.AddSingleton<IReadService, ReadService>(provider => new ReadService(provider.GetRequiredService<HttpClient>(), baseUrl));
             services.AddSingleton<IWriteService, WriteService>(provider => new WriteService(provider.GetRequiredService<HttpClient>(), baseUrl));
-            services.AddSingleton<CartService>();
-            services.AddStorage();
+            services.AddSingleton<ICartService, CartService>(provider => new CartService(provider.GetRequiredService<LocalStorage>()));
         }
 
         public void Configure(IBlazorApplicationBuilder app)

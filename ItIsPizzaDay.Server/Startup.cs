@@ -23,6 +23,7 @@ namespace ItIsPizzaDay.Server
                 .AddJsonOptions(options =>
                 {
                     options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    options.SerializerSettings.CheckAdditionalContent = true;
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

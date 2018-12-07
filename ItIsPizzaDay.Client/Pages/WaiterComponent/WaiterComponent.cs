@@ -29,7 +29,7 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
 
         protected ICollection<Ingredient> CustomIngredients { get; private set; } = new List<Ingredient>();
 
-        protected ICollection<Ingredient> OriginalIngredients { get; private set; } = new List<Ingredient>();
+        private ICollection<Ingredient> OriginalIngredients { get; set; } = new List<Ingredient>();
 
         protected decimal TotalPrice => CustomIngredients.Except(Food.FoodIngredient.Select(fi => fi.IngredientNavigation)).Sum(i => i.Price ?? 0) + Food.Price;
 
@@ -65,39 +65,29 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
 
         private FoodOrder GetFoodOrder()
         {
-            Console.WriteLine("Get FoodOrder 1");
-            
             var foodOrderIngredient = CustomIngredients.Except(OriginalIngredients).Select(ingredient => new FoodOrderIngredient
             {
                 Isremoval = false,
                 Ingredient = ingredient.Id
             }).ToList();
 
-            Console.WriteLine("Get FoodOrder 2");
-            
             foodOrderIngredient.AddRange(OriginalIngredients.Except(CustomIngredients).Select(ingredient => new FoodOrderIngredient
             {
                 Isremoval = true,
                 Ingredient = ingredient.Id
             }).ToList());
 
-            Console.WriteLine("Get FoodOrder 3");
-            
             var foodOrder = new FoodOrder
             {
                 Food = Food.Id,
                 FoodOrderIngredient = foodOrderIngredient
             };
             
-            Console.WriteLine("Get FoodOrder 4");
-            
             return foodOrder;
         }
 
         protected async Task OrderNow()
         {
-            Console.WriteLine("I was called 1");
-
             var order = new Order
             {
                 FoodOrder = new List<FoodOrder>
@@ -106,11 +96,7 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
                 }
             };
             
-            Console.WriteLine("I was called 2");
-
             await Writer.Order.Save(order);
-
-            Console.WriteLine("I was called 3");
         }
     }
 }

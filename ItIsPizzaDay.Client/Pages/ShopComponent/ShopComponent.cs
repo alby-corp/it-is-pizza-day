@@ -3,6 +3,7 @@ namespace ItIsPizzaDay.Client.Pages.ShopComponent
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using ItIsPizzaDay.Shared.Abstract;
     using ItIsPizzaDay.Shared.Models;
     using Microsoft.AspNetCore.Blazor.Components;
     using Services.Abstract;
@@ -12,8 +13,12 @@ namespace ItIsPizzaDay.Client.Pages.ShopComponent
     {
         [Inject]
         private IReadService Reader { get; set; }
-        
-        [Inject] IWriteService Writer { get; set; }
+
+        [Inject]
+        private IWriteService Writer { get; set; }
+
+        [Inject]
+        private ICartService CartService { get; set; }
 
         protected ICollection<FoodType> Types { get; private set; } = new List<FoodType>();
 
@@ -26,16 +31,22 @@ namespace ItIsPizzaDay.Client.Pages.ShopComponent
         {
             var order = new Order
             {
-                FoodOrder = new List<FoodOrder>
-                {
-                    new FoodOrder
-                    {
-                        Food = food.Id,
-                    }
-                }
+                FoodOrder = new List<FoodOrder>(new List<FoodOrder> { GetFoodOrder(food) })
             };
 
             await Writer.Order.Save(order);
         }
+
+        protected async Task AddToCart(Food food)
+        {
+            var foodOrder = GetFoodOrder(food);
+
+            await CartService.Add(foodOrder);
+        }
+
+        private static FoodOrder GetFoodOrder(IEntity food) => new FoodOrder
+        {
+            Food = food.Id
+        };
     }
 }

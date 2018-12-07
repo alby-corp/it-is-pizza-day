@@ -15,7 +15,7 @@
                         <h5 class="card-title">@food.Name - @food.Price.ToString("N2") &euro;</h5>
                         <h6 class="card-subtitle mb-2 text-muted">@string.Join(", ", food.FoodIngredient.Select(fi => fi.IngredientNavigation.Name))</h6>
                         <a onclick=@(_ => OrderNow(food)) class="btn btn-outline-dark">Ordina Subito</a>
-                        <a onclick="" class="btn btn-outline-dark">Aggiungi al Carrello</a>
+                        <a onclick="@(_ => AddToCart(food))" class="btn btn-outline-dark">Aggiungi al Carrello</a>
                         <NavLink href="@($"/shop/{food.Id}")" class="btn btn-outline-dark">Modifica</navlink>
                     </div>
                 </div>
