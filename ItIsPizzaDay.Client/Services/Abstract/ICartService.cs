@@ -7,11 +7,11 @@ namespace ItIsPizzaDay.Client.Services.Abstract
 
     public interface ICartService
     {
-        IEnumerable<FoodOrder> Value { get; }
+        ICollection<FoodOrder> Value { get; }
 
-        void Subscribe(IObserver<IEnumerable<FoodOrder>> observer);
+        void Subscribe(IObserver<ICollection<FoodOrder>> observer);
 
-        void Subscribe(Action<IEnumerable<FoodOrder>> onNext);
+        void Subscribe(Action<ICollection<FoodOrder>> onNext);
 
         Task Add(FoodOrder foodOrder);
 

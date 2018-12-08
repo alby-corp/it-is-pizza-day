@@ -1,0 +1,9 @@
+@page "/orders"
+@inherits OrdersComponent
+
+<ul>
+    @foreach (var order in Orders)
+    {
+        <li>@order.Id</li>
+    }
+</ul>

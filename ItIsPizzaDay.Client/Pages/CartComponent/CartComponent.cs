@@ -5,14 +5,14 @@ namespace ItIsPizzaDay.Client.Pages.CartComponent
     using System.Threading.Tasks;
     using ItIsPizzaDay.Shared.Models;
     using Microsoft.AspNetCore.Blazor.Components;
-    using Services;
+    using Services.Abstract;
 
     public class CartComponent : BlazorComponent
     {
         [Inject]
-        private CartService CartService { get; set; }
+        private ICartService CartService { get; set; }
 
-        protected IEnumerable<FoodOrder> FoodOrder { get; private set; }
+        protected ICollection<FoodOrder> FoodOrder { get; private set; }
 
         protected override void OnInit()
         {

@@ -20,5 +20,6 @@ namespace ItIsPizzaDay.Client.Services
         public ReadEndPoint<Food> Food => new ReadEndPoint<Food>(_http, _baseUrl);
         public ReadEndPoint<Ingredient> Ingredient => new ReadEndPoint<Ingredient>(_http, _baseUrl);
         public ReadEndPoint<FoodType> Type => new ReadEndPoint<FoodType>(_http, _baseUrl);
+        public ReadEndPoint<Order> Order => new ReadEndPoint<Order>(_http, _baseUrl);
     }
 }

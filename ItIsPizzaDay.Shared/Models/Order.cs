@@ -5,11 +5,6 @@
 
     public partial class Order : Entity
     {
-        public Order()
-        {
-            FoodOrder = new HashSet<FoodOrder>();
-        }
-
         public DateTime? Date { get; set; }
         public Guid Muppet { get; set; }
 

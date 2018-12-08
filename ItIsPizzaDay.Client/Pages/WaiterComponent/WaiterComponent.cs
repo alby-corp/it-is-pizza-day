@@ -1,13 +1,11 @@
 namespace ItIsPizzaDay.Client.Pages.WaiterComponent
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using ItIsPizzaDay.Shared.Models;
     using Microsoft.AspNetCore.Blazor.Components;
     using Microsoft.AspNetCore.Blazor.Services;
-    using Services;
     using Services.Abstract;
 
     public class WaiterComponent : BlazorComponent
@@ -16,7 +14,7 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
         private IUriHelper UriHelper { get; set; }
 
         [Inject]
-        private CartService CartService { get; set; }
+        private ICartService CartService { get; set; }
 
         [Inject]
         private IWriteService Writer { get; set; }
@@ -82,7 +80,7 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
                 Food = Food.Id,
                 FoodOrderIngredient = foodOrderIngredient
             };
-            
+
             return foodOrder;
         }
 
@@ -95,7 +93,7 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
                     GetFoodOrder()
                 }
             };
-            
+
             await Writer.Order.Save(order);
         }
     }

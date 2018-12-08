@@ -2,12 +2,12 @@ namespace ItIsPizzaDay.Client.Pages.CartBadgeComponent
 {
     using System.Linq;
     using Microsoft.AspNetCore.Blazor.Components;
-    using Services;
+    using Services.Abstract;
 
     public class CartBadgeComponent : BlazorComponent
     {
         [Inject]
-        private CartService CartService { get; set; }
+        private ICartService CartService { get; set; }
 
         protected int TotalItems { get; set; }
 

@@ -1,5 +1,6 @@
 namespace ItIsPizzaDay.Client.Pages.ShopComponent
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -40,6 +41,8 @@ namespace ItIsPizzaDay.Client.Pages.ShopComponent
         protected async Task AddToCart(Food food)
         {
             var foodOrder = GetFoodOrder(food);
+            
+            Console.WriteLine(foodOrder.Food);
 
             await CartService.Add(foodOrder);
         }
