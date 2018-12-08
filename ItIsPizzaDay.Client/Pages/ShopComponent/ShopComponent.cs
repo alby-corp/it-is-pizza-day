@@ -4,7 +4,6 @@ namespace ItIsPizzaDay.Client.Pages.ShopComponent
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using ItIsPizzaDay.Shared.Abstract;
     using ItIsPizzaDay.Shared.Models;
     using Microsoft.AspNetCore.Blazor.Components;
     using Services.Abstract;
@@ -41,15 +40,16 @@ namespace ItIsPizzaDay.Client.Pages.ShopComponent
         protected async Task AddToCart(Food food)
         {
             var foodOrder = GetFoodOrder(food);
-            
+
             Console.WriteLine(foodOrder.Food);
 
             await CartService.Add(foodOrder);
         }
 
-        private static FoodOrder GetFoodOrder(IEntity food) => new FoodOrder
+        private static FoodOrder GetFoodOrder(Food food) => new FoodOrder
         {
-            Food = food.Id
+            Food = food.Id,
+            FoodNavigation = food
         };
     }
 }

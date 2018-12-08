@@ -10,6 +10,6 @@
 
         public Food FoodNavigation { get; set; }
         public Order OrderNavigation { get; set; }
-        public ICollection<FoodOrderIngredient> FoodOrderIngredient { get; set; }
+        public ICollection<FoodOrderIngredient> FoodOrderIngredient { get; set; } = new List<FoodOrderIngredient>();
     }
 }

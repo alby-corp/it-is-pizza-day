@@ -60,30 +60,7 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
 
             UriHelper.NavigateTo("/cart");
         }
-
-        private FoodOrder GetFoodOrder()
-        {
-            var foodOrderIngredient = CustomIngredients.Except(OriginalIngredients).Select(ingredient => new FoodOrderIngredient
-            {
-                Isremoval = false,
-                Ingredient = ingredient.Id
-            }).ToList();
-
-            foodOrderIngredient.AddRange(OriginalIngredients.Except(CustomIngredients).Select(ingredient => new FoodOrderIngredient
-            {
-                Isremoval = true,
-                Ingredient = ingredient.Id
-            }).ToList());
-
-            var foodOrder = new FoodOrder
-            {
-                Food = Food.Id,
-                FoodOrderIngredient = foodOrderIngredient
-            };
-
-            return foodOrder;
-        }
-
+        
         protected async Task OrderNow()
         {
             var order = new Order
@@ -95,6 +72,37 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
             };
 
             await Writer.Order.Save(order);
+            
+            UriHelper.NavigateTo("/orders");
         }
+        
+        private FoodOrder GetFoodOrder()
+        {
+            var foodOrderIngredient = CustomIngredients.Except(OriginalIngredients).Select(ingredient => new FoodOrderIngredient
+            {
+                Isremoval = false,
+                Ingredient = ingredient.Id,
+                IngredientNavigation = ingredient
+
+            }).ToList();
+
+            foodOrderIngredient.AddRange(OriginalIngredients.Except(CustomIngredients).Select(ingredient => new FoodOrderIngredient
+            {
+                Isremoval = true,
+                Ingredient = ingredient.Id,
+                IngredientNavigation = ingredient
+            }).ToList());
+
+            var foodOrder = new FoodOrder
+            {
+                Food = Food.Id,
+                FoodNavigation = Food,
+                FoodOrderIngredient = foodOrderIngredient
+            };
+
+            return foodOrder;
+        }
+
     }
 }
+

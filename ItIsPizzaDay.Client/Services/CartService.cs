@@ -38,9 +38,16 @@ namespace ItIsPizzaDay.Client.Services
 
         public async Task Add(FoodOrder foodOrder)
         {
+            Console.WriteLine("HEI");
+            
             await RepairFromStorage();
 
+            Console.WriteLine("HOU");
+            
             var foodsOrder = Value.ToList();
+            
+            Console.WriteLine("KOKO:" + foodOrder.FoodNavigation?.Name ?? "IS NULL");
+            
             foodsOrder.Add(foodOrder);
 
             _subject.OnNext(foodsOrder);

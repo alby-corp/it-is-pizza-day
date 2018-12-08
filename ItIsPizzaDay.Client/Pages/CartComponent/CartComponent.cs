@@ -12,14 +12,20 @@ namespace ItIsPizzaDay.Client.Pages.CartComponent
         [Inject]
         private ICartService CartService { get; set; }
 
-        protected ICollection<FoodOrder> FoodOrder { get; private set; }
+        protected ICollection<FoodOrder> FoodOrder { get; private set; } = new List<FoodOrder>();
 
         protected override void OnInit()
         {
+            Console.WriteLine("Roald 0");
+            
             CartService.Subscribe(foodOrder =>
             {
+                Console.WriteLine("Alby 1");
+
                 FoodOrder = foodOrder;
                 StateHasChanged();
+                
+                Console.WriteLine("Alby 2");
             });
         }
 
