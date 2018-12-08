@@ -24,6 +24,8 @@ namespace ItIsPizzaDay.Client.Services
             _localStorage = localStorage;
             _initialized = initialized;
             _key = key;
+
+            RepairFromStorage();
         }
 
         public void Subscribe(IObserver<ICollection<FoodOrder>> observer)
