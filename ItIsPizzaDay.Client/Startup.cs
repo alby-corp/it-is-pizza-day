@@ -23,9 +23,8 @@ namespace ItIsPizzaDay.Client
                 provider.GetRequiredService<LocalStorage>(),
                 async () =>
                 {
-                    Console.WriteLine("QUI");
                     var t =  await provider.GetRequiredService<LocalStorage>().GetItem<ICollection<FoodOrder>>("f71cf4e3-a9b1-4852-a893-9f71a6399b4b");
-                    Console.WriteLine("QUA");
+
                     return t;
                 },
                 "f71cf4e3-a9b1-4852-a893-9f71a6399b4b"

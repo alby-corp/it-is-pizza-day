@@ -6,11 +6,16 @@ namespace ItIsPizzaDay.Client.Pages.ShopComponent
     using System.Threading.Tasks;
     using ItIsPizzaDay.Shared.Models;
     using Microsoft.AspNetCore.Blazor.Components;
+    using Microsoft.AspNetCore.Blazor.Services;
+    using Services;
     using Services.Abstract;
     using FoodType = ItIsPizzaDay.Shared.Models.Type;
 
     public class ShopComponent : BlazorComponent
     {
+        [Inject]
+        private IUriHelper UriHelper { get; set; }
+        
         [Inject]
         private IReadService Reader { get; set; }
 
@@ -27,29 +32,22 @@ namespace ItIsPizzaDay.Client.Pages.ShopComponent
             Types = (await Reader.Type.GetAllAsync()).ToList();
         }
 
-        protected async Task OrderNow(Food food)
-        {
-            var order = new Order
-            {
-                FoodOrder = new List<FoodOrder>(new List<FoodOrder> { GetFoodOrder(food) })
-            };
-
-            await Writer.Order.Save(order);
-        }
-
         protected async Task AddToCart(Food food)
         {
-            var foodOrder = GetFoodOrder(food);
-
-            Console.WriteLine(foodOrder.Food);
+            var foodOrder = new OrderService(food).GetFoodOrder();
 
             await CartService.Add(foodOrder);
+            
+            UriHelper.NavigateTo("/cart");
         }
 
-        private static FoodOrder GetFoodOrder(Food food) => new FoodOrder
+        protected async Task OrderNow(Food food)
         {
-            Food = food.Id,
-            FoodNavigation = food
-        };
+            var order = new OrderService(food).GetOrder();
+            
+            await Writer.Order.Save(order);
+            
+            UriHelper.NavigateTo("/orders");
+        }
     }
 }

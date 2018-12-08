@@ -16,16 +16,10 @@ namespace ItIsPizzaDay.Client.Pages.CartComponent
 
         protected override void OnInit()
         {
-            Console.WriteLine("Roald 0");
-            
             CartService.Subscribe(foodOrder =>
             {
-                Console.WriteLine("Alby 1");
-
                 FoodOrder = foodOrder;
                 StateHasChanged();
-                
-                Console.WriteLine("Alby 2");
             });
         }
 
