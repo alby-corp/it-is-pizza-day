@@ -1,0 +1,28 @@
+@inherits ChatComponent
+
+<div id="chat" class="@(IsOpen ? "chat-open " : "chat-closed ") @(WasOpenedAtLeastOnce ? "animate" : "")">
+    <div class="chat-ui">
+        <div class="chat-header">
+            Alby<a class="btn-chat-close" onclick="@(_ => Close())">&times;</a>
+        </div>
+        <div class="chat-messages" ref="scrollArea">
+            @foreach (var message in Messages)
+            {
+                <div class="message @(message.Sender == Sender.Alby ? "message-alby" : "message-user")">
+                    @message.Text
+                </div>
+            }
+           
+        </div>
+        <div class="chat-typing @(IsTyping ? "chat-typing-visible" : "")">Sto scrivendo...</div>
+        <div class="chat-input">
+            <form onsubmit="@(_ => Send(Text))">
+                <input class="form-control" type="text" placeholder="Come posso aiutarti?" bind="@Text"/>
+            </form>
+            <a class="btn-chat-send" onclick="@(_ => Send(Text))">&#x27a4;</a>
+        </div>
+    </div>
+
+    <div class="btn-chat-open" onclick="@(_ => Open())">
+    </div>
+</div>
