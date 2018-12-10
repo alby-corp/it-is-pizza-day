@@ -35,7 +35,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="filter">Search</span>
                 </div>
-                <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search" bind="@Filter"/>
+                <input ref="filterInput" type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search" onkeyup="@(_ => FilterChanged())"/>
             </div>
 
             <ul class="list-group list-group-flush">

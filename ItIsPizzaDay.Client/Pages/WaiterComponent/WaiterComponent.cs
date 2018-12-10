@@ -4,6 +4,7 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
     using System.Linq;
     using System.Threading.Tasks;
     using ItIsPizzaDay.Shared.Models;
+    using Microsoft.AspNetCore.Blazor;
     using Microsoft.AspNetCore.Blazor.Components;
     using Microsoft.AspNetCore.Blazor.Services;
     using Services.Abstract;
@@ -11,6 +12,8 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
 
     public class WaiterComponent : BlazorComponent
     {
+        protected ElementRef filterInput;
+
         [Inject]
         private IUriHelper UriHelper { get; set; }
 
@@ -31,6 +34,11 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
         protected decimal TotalPrice => CustomIngredients.Except(Food.FoodIngredient.Select(fi => fi.IngredientNavigation)).Sum(i => i.Price ?? 0) + Food.Price;
 
         protected string Filter { get; set; } = string.Empty;
+
+        protected async Task FilterChanged()
+        {
+            Filter = await Interop.Dom.GetValue(filterInput);
+        }
 
         protected override void OnParametersSet()
         {
