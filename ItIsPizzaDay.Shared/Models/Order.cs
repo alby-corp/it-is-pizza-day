@@ -3,12 +3,12 @@
     using System;
     using System.Collections.Generic;
 
-    public partial class Order : Entity
+    public class Order : Entity
     {
         public DateTime? Date { get; set; }
         public Guid Muppet { get; set; }
 
         public Muppet MuppetNavigation { get; set; }
-        public ICollection<FoodOrder> FoodOrder { get; set; }
+        public ICollection<FoodOrder> FoodOrder { get; set; } = new List<FoodOrder>();
     }
 }

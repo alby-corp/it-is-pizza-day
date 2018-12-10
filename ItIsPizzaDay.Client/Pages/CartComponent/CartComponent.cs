@@ -5,20 +5,28 @@ namespace ItIsPizzaDay.Client.Pages.CartComponent
     using System.Threading.Tasks;
     using ItIsPizzaDay.Shared.Models;
     using Microsoft.AspNetCore.Blazor.Components;
+    using Microsoft.AspNetCore.Blazor.Services;
     using Services.Abstract;
+    using Services.Statics;
 
     public class CartComponent : BlazorComponent
     {
         [Inject]
+        private IUriHelper UriHelper { get; set; }
+        
+        [Inject]
         private ICartService CartService { get; set; }
 
-        protected ICollection<FoodOrder> FoodOrder { get; private set; } = new List<FoodOrder>();
+        [Inject]
+        private IWriteService Writer { get; set; }
+
+        protected ICollection<FoodOrder> FoodsOrder { get; private set; } = new List<FoodOrder>();
 
         protected override void OnInit()
         {
-            CartService.Subscribe(foodOrder =>
+            CartService.Subscribe(foodsOrder =>
             {
-                FoodOrder = foodOrder;
+                FoodsOrder = foodsOrder;
                 StateHasChanged();
             });
         }
@@ -28,9 +36,13 @@ namespace ItIsPizzaDay.Client.Pages.CartComponent
             await CartService.Delete(id);
         }
 
-        protected void DoOrder()
+        protected async Task DoOrder()
         {
+            await Writer.Order.Save(OrderService.GetOrder(FoodsOrder));
+
+            await Clear();
             
+            UriHelper.NavigateTo("/orders");
         }
 
         protected async Task Clear()

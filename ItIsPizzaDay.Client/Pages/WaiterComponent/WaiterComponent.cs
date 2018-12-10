@@ -6,8 +6,8 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
     using ItIsPizzaDay.Shared.Models;
     using Microsoft.AspNetCore.Blazor.Components;
     using Microsoft.AspNetCore.Blazor.Services;
-    using Services;
     using Services.Abstract;
+    using Services.Statics;
 
     public class WaiterComponent : BlazorComponent
     {
@@ -26,8 +26,6 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
         [Parameter]
         protected ICollection<Ingredient> Ingredients { get; private set; } = new List<Ingredient>();
 
-        private OrderService _builderServie;
-
         protected ICollection<Ingredient> CustomIngredients { get; private set; } = new List<Ingredient>();
 
         protected decimal TotalPrice => CustomIngredients.Except(Food.FoodIngredient.Select(fi => fi.IngredientNavigation)).Sum(i => i.Price ?? 0) + Food.Price;
@@ -40,8 +38,6 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
 
             CustomIngredients = originalIngredients.ToList();
             Ingredients = Ingredients.Except(originalIngredients.ToList()).ToList();
-
-            _builderServie = new OrderService(Food);
         }
 
         protected void Add(Ingredient ingredient)
@@ -60,14 +56,14 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
 
         protected async Task AddToCart()
         {
-            await CartService.Add(_builderServie.GetFoodOrder(CustomIngredients));
+            await CartService.Add(FoodOrderService.GetFoodOrder(Food, CustomIngredients));
 
             UriHelper.NavigateTo("/cart");
         }
 
         protected async Task OrderNow()
         {
-            await Writer.Order.Save(_builderServie.GetOrder(CustomIngredients));
+            await Writer.Order.Save(OrderService.GetOrder(Food, CustomIngredients));
 
             UriHelper.NavigateTo("/orders");
         }

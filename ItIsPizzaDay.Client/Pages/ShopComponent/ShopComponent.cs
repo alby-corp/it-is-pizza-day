@@ -1,21 +1,20 @@
 namespace ItIsPizzaDay.Client.Pages.ShopComponent
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using ItIsPizzaDay.Shared.Models;
     using Microsoft.AspNetCore.Blazor.Components;
     using Microsoft.AspNetCore.Blazor.Services;
-    using Services;
     using Services.Abstract;
+    using Services.Statics;
     using FoodType = ItIsPizzaDay.Shared.Models.Type;
 
     public class ShopComponent : BlazorComponent
     {
         [Inject]
         private IUriHelper UriHelper { get; set; }
-        
+
         [Inject]
         private IReadService Reader { get; set; }
 
@@ -34,19 +33,19 @@ namespace ItIsPizzaDay.Client.Pages.ShopComponent
 
         protected async Task AddToCart(Food food)
         {
-            var foodOrder = new OrderService(food).GetFoodOrder();
+            var foodOrder = FoodOrderService.GetFoodOrder(food);
 
             await CartService.Add(foodOrder);
-            
+
             UriHelper.NavigateTo("/cart");
         }
 
         protected async Task OrderNow(Food food)
         {
-            var order = new OrderService(food).GetOrder();
-            
+            var order = OrderService.GetOrder(food);
+
             await Writer.Order.Save(order);
-            
+
             UriHelper.NavigateTo("/orders");
         }
     }
