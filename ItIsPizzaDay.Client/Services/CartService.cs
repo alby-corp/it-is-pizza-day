@@ -13,19 +13,18 @@ namespace ItIsPizzaDay.Client.Services
     {
         private readonly string _key;
         private readonly LocalStorage _localStorage;
-        private readonly Func<Task<ICollection<FoodOrder>>> _initialized;
+        private readonly Task _initialized;
 
         private readonly BehaviorSubject<ICollection<FoodOrder>> _subject = new BehaviorSubject<ICollection<FoodOrder>>(new List<FoodOrder>());
 
         public ICollection<FoodOrder> Value => _subject.Value.ToList();
 
-        public CartService(LocalStorage localStorage, Func<Task<ICollection<FoodOrder>>> initialized, string key)
+        public CartService(LocalStorage localStorage, string key)
         {
             _localStorage = localStorage;
-            _initialized = initialized;
             _key = key;
 
-            RepairFromStorage();
+            _initialized = RepairFromStorage();
         }
 
         public void Subscribe(IObserver<ICollection<FoodOrder>> observer)
@@ -40,7 +39,7 @@ namespace ItIsPizzaDay.Client.Services
 
         public async Task Add(FoodOrder foodOrder)
         {
-            await RepairFromStorage();
+            await _initialized;
 
             var foodsOrder = Value.ToList();
             
@@ -52,7 +51,7 @@ namespace ItIsPizzaDay.Client.Services
 
         public async Task Delete(Guid id)
         {
-            await RepairFromStorage();
+            await _initialized;
 
             var foodsOrder = Value.ToList();
             foodsOrder.Remove(new FoodOrder { Id = id });
@@ -63,13 +62,15 @@ namespace ItIsPizzaDay.Client.Services
 
         public async Task Clear()
         {
+            await _initialized;
+            
             _subject.OnNext(new List<FoodOrder>());
             await _localStorage.SetItem<ICollection<FoodOrder>>(_key, new List<FoodOrder>());
         }
         
         private async Task RepairFromStorage()
         {
-            var foodsOrder = await _initialized();
+            var foodsOrder = await _localStorage.GetItem<ICollection<FoodOrder>>(_key);
             
             _subject.OnNext(foodsOrder ?? new List<FoodOrder>());
         }
