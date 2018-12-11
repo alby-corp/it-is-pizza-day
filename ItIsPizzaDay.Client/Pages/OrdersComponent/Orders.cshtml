@@ -4,7 +4,7 @@
 
 @foreach (var order in Orders.OrderByDescending(o => o.Date))
 {
-    <div class="card text-center mb-2">
+    <div class="card text-center mb-4">
 
         <div class="card-header">
             <div class="row align-items-center">
@@ -28,8 +28,8 @@
 
             @foreach (var foodOrder in order.FoodOrder)
             {
-                <div class="text-left">
-                    <h4 class="card-title row align-items-center">@($"{foodOrder.FoodNavigation.Name} - {foodOrder.Price:N2}") &euro;</h4>
+                <div class="text-left mb-2">
+                    <h4 class="card-title">@($"{foodOrder.FoodNavigation.Name} - {foodOrder.Price:N2}") &euro;</h4>
                     <h5 class="card-subtitle mb-2 text-muted">@($"{string.Join(", ", foodOrder.Ingredients)}")</h5>
                 </div>
 
