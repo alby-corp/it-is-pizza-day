@@ -14,7 +14,13 @@ namespace ItIsPizzaDay.Server.Repositories
         }
 
         protected override IQueryable<Order> _selector(IQueryable<Order> selector) => selector
-            .Include(o => o.FoodOrder).ThenInclude(fo => fo.FoodNavigation)
-            .Include(o => o.FoodOrder).ThenInclude(fo => fo.FoodOrderIngredient).ThenInclude(foi => foi.IngredientNavigation);
+            .Include(o => o.FoodOrder)
+            .ThenInclude(fo => fo.FoodNavigation)
+            .ThenInclude(order => order.FoodIngredient)
+            .ThenInclude(collection => collection.IngredientNavigation)
+
+            .Include(order => order.FoodOrder)
+            .ThenInclude(orders => orders.FoodOrderIngredient)
+            .ThenInclude(collection => collection.IngredientNavigation);
     }
 }
