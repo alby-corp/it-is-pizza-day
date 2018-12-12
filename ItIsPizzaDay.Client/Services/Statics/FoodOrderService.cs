@@ -78,5 +78,104 @@ namespace ItIsPizzaDay.Client.Services.Statics
         {
             return food.FoodIngredient.Select(fi => fi.IngredientNavigation).ToList();
         }
+        
+        class Candidate
+        {
+            public Food Food { get; set; }
+            
+            public decimal Price { get; set; }
+            
+            public IReadOnlyList<Ingredient> UnknownIngredients { get; set; }
+            
+            public IReadOnlyList<Ingredient> Additions { get; set; }
+            
+            public IReadOnlyList<Ingredient> Removals { get; set; }
+        }
+
+        public static ICollection<FoodOrder> LowestPrice(ICollection<Ingredient> target, ICollection<Food> foods)
+        {
+            decimal SumPrices(Food food, IEnumerable<Ingredient> ingredients) =>
+                food.Price + ingredients.Except(food.FoodIngredient.Select(ingredient => ingredient.IngredientNavigation))
+                    .Aggregate(seed: 0m, (total, item) => total + (item.Price ?? 0));
+
+            var candidates = foods.Select(food =>
+            {
+                var additions = target.Except(food.FoodIngredient.Select(ingredient => ingredient.IngredientNavigation)).ToList();
+
+                return new Candidate
+                {
+                    Food = food,
+                    Price = SumPrices(food, target),
+                    UnknownIngredients = additions.Where(addition => addition.Price == null).ToList(),
+                    Additions = additions,
+                    Removals = food.FoodIngredient.Select(ingredient => ingredient.IngredientNavigation).Except(target).ToList()
+                };
+            });
+
+            Candidate Min(Candidate left, Candidate right)
+            {
+                var intersection = left.UnknownIngredients.Intersect(right.UnknownIngredients).ToList();
+
+                var leftIsSubset = left.UnknownIngredients.Count == intersection.Count;
+                var rightIsSubset = right.UnknownIngredients.Count == intersection.Count;
+
+                if (left.Price == right.Price && leftIsSubset && rightIsSubset)
+                {
+                    var leftChanges = left.Additions.Count + left.Removals.Count;
+                    var rightChanges = right.Additions.Count + right.Removals.Count;
+
+                    if (leftChanges == rightChanges)
+                    {
+                        return null;
+                    }
+
+                    return leftChanges < rightChanges ? left : right;
+                }
+
+                if (left.Price <= right.Price && leftIsSubset)
+                {
+                    return left;
+                }
+
+                if (right.Price <= left.Price && rightIsSubset)
+                {
+                    return right;
+                }
+
+                return null;
+            }
+
+            var minimal = new List<Candidate>();
+
+            foreach (var candidate in candidates)
+            {
+                minimal.RemoveAll(min => Min(min, candidate) == candidate);
+                if (minimal.All(min => Min(min, candidate) != min))
+                {
+                    minimal.Add(candidate);
+                }
+            }
+
+            return minimal
+                .OrderBy(candidate => candidate.Price)
+                .Select(candidate => new FoodOrder
+                {
+                    Food = candidate.Food.Id,
+                    FoodNavigation = candidate.Food,
+                    FoodOrderIngredient = candidate.Additions.Select(ingredient => new FoodOrderIngredient
+                        {
+                            Ingredient = ingredient.Id,
+                            IngredientNavigation = ingredient,
+                            Isremoval = false
+                        })
+                        .Concat(candidate.Removals.Select(ingredient => new FoodOrderIngredient
+                        {
+                            Ingredient = ingredient.Id,
+                            IngredientNavigation = ingredient,
+                            Isremoval = true
+                        }))
+                        .ToList()
+                }).ToList();
+        }
     }
 }

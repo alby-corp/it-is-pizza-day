@@ -25,15 +25,22 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
 
         [Parameter]
         protected Food Food { get; set; } = new Food();
+        
+        [Parameter]
+        protected ICollection<Food> Foods { get; set; } = new List<Food>();
 
         [Parameter]
         protected ICollection<Ingredient> Ingredients { get; private set; } = new List<Ingredient>();
 
-        protected ICollection<Ingredient> CustomIngredients { get; private set; } = new List<Ingredient>();
+        protected List<Ingredient> CustomIngredients { get; private set; } = new List<Ingredient>();
 
         protected decimal TotalPrice => CustomIngredients.Except(Food.FoodIngredient.Select(fi => fi.IngredientNavigation)).Sum(i => i.Price ?? 0) + Food.Price;
 
         protected string Filter { get; set; } = string.Empty;
+        
+        protected ICollection<FoodOrder> BetterDeals { get; set; } = new List<FoodOrder>();
+        
+        protected ICollection<Ingredient> AllIngredients { get; private set; } = new List<Ingredient>();
 
         protected async Task FilterChanged()
         {
@@ -42,6 +49,8 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
 
         protected override void OnParametersSet()
         {
+            AllIngredients = Ingredients;
+            
             var originalIngredients = Food.FoodIngredient.Select(fi => fi.IngredientNavigation).ToList();
 
             CustomIngredients = originalIngredients.ToList();
@@ -53,6 +62,8 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
             CustomIngredients.Add(ingredient);
 
             Ingredients.Remove(ingredient);
+
+            UpdateBetterDeals();
         }
 
         protected void Remove(Ingredient ingredient)
@@ -60,6 +71,8 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
             CustomIngredients.Remove(ingredient);
 
             Ingredients.Add(ingredient);
+            
+            UpdateBetterDeals();
         }
 
         protected async Task AddToCart()
@@ -74,6 +87,27 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
             await Writer.Order.Save(OrderService.GetOrder(Food, CustomIngredients));
 
             UriHelper.NavigateTo("/orders");
+        }
+        
+        protected async Task AddToCart(FoodOrder food)
+        {
+            await CartService.Add(FoodOrderService.GetFoodOrder(food.FoodNavigation, food.FoodOrderIngredient.Select(ingredient => ingredient.IngredientNavigation).ToList()));
+
+            UriHelper.NavigateTo("/cart");
+        }
+
+        protected async Task OrderNow(FoodOrder food)
+        {
+            await Writer.Order.Save(OrderService.GetOrder(food.FoodNavigation, food.FoodOrderIngredient.Select(ingredient => ingredient.IngredientNavigation).ToList()));
+
+            UriHelper.NavigateTo("/orders");
+        }
+        
+        private void UpdateBetterDeals()
+        {
+            BetterDeals = FoodOrderService.LowestPrice(CustomIngredients, Foods)
+                .Where(order => order.Price() < TotalPrice)
+                .ToList();
         }
     }
 }
