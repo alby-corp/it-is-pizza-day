@@ -40,7 +40,7 @@ namespace ItIsPizzaDay.Server.Repositories.Structure
 
         public async Task Delete(Guid id)
         {
-            _context.Remove(id);
+            _context.Remove(new T { Id = id });
             await _context.SaveChangesAsync();
         }
     }

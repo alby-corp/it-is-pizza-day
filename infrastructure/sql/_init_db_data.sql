@@ -1,7 +1,7 @@
-INSERT INTO public.type (id, description, priority) VALUES ('2ee7bc5b-1ec1-4e4b-b457-1206fd1cbdd3', 'Pizzeria', 1);
-INSERT INTO public.type (id, description, priority) VALUES ('11245cbf-994c-49f9-a257-d565540009d4', 'Restaurant', 2);
-INSERT INTO public.type (id, description, priority) VALUES ('14b9896f-9e6f-41e3-a006-cda203c72fd0', 'Bakery', 2);
-INSERT INTO public.type (id, description, priority) VALUES ('9dbd90e1-911a-48e1-a1bd-c9e8c969d527', 'SubShop', 2);
+INSERT INTO public.type (id, description) VALUES ('2ee7bc5b-1ec1-4e4b-b457-1206fd1cbdd3', 'Pizzeria');
+INSERT INTO public.type (id, description) VALUES ('11245cbf-994c-49f9-a257-d565540009d4', 'Restaurant');
+INSERT INTO public.type (id, description) VALUES ('14b9896f-9e6f-41e3-a006-cda203c72fd0', 'Bakery');
+INSERT INTO public.type (id, description) VALUES ('9dbd90e1-911a-48e1-a1bd-c9e8c969d527', 'SubShop');
 
 INSERT INTO food(id, name, price, visible, type) VALUES ('82322b89-f2bf-44fc-bf9b-0f705ba6383a', 'Salmone', 8.00, true, '2ee7bc5b-1ec1-4e4b-b457-1206fd1cbdd3');
 INSERT INTO food(id, name, price, visible, type) VALUES ('85a18247-66d3-485a-830f-0e9caef0a275', 'Tris di Funghi', 8.00, true, '2ee7bc5b-1ec1-4e4b-b457-1206fd1cbdd3');
@@ -543,7 +543,6 @@ INSERT INTO muppet (id, real_name) VALUES ('39d13415-1f0a-4933-895a-2a568455ecef
 INSERT INTO muppet (id, real_name) VALUES ('9fe48127-280a-493b-8d51-11476dfc4524', 'Ellero Cesare');
 INSERT INTO muppet (id, real_name) VALUES ('97ca45d8-8e35-4d6a-96b1-3641c1b8b081', 'De Faveri Martina');
 INSERT INTO muppet (id, real_name) VALUES ('68a0c3a0-8608-4e5a-8581-32e5206c2b23', 'Di Legami Gianluca');
-INSERT INTO muppet (id, real_name) VALUES ('6a332b52-ddc0-4db7-b021-4a58fdc84cc4', 'Stimac Ivo');
 INSERT INTO muppet (id, real_name) VALUES ('8b86834d-39e7-4250-96f4-678dc693c13f', 'Danzo Fabio');
 INSERT INTO muppet (id, real_name) VALUES ('084b2a1b-8255-4e2a-be37-8106f7339508', 'De Tomi Piero');
 INSERT INTO muppet (id, real_name) VALUES ('53fa4ef3-844f-4b67-9709-b4156729861d', 'Vinkovic Goranka');
@@ -565,5 +564,5 @@ INSERT INTO muppet (id, real_name) VALUES ('90614e3f-35c7-49f2-a81d-fcd10985095a
 INSERT INTO muppet (id, real_name) VALUES ('5de28be6-d10c-4908-ae21-b5f43c63346d', 'Simunovic Tomislav');
 INSERT INTO muppet (id, real_name) VALUES ('3015210f-6054-42b7-9ec7-6c7e7be69918', 'Iavarone Stefano');
 INSERT INTO muppet (id, real_name) VALUES ('8a387890-aacc-4b73-bc59-e3499b6ecfb6', 'Bizzotto Alessio');
-INSERT INTO muppet (id, real_name) VALUES ('46f6321a-6eb0-4165-be3d-c2b1b10a82c8', 'Portelli Mario');
+INSERT INTO muppet (id, real_name) VALUES ('46f6321a-6eb0-4165-be3d-c2b1b10a82c8', 'Bortelli Mario');
 INSERT INTO muppet (id, real_name) VALUES ('0df154e7-b9c9-4c23-b6d0-bbda82bf0492', 'Feront Francesco');

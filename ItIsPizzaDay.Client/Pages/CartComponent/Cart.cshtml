@@ -1,11 +1,12 @@
 @page "/cart"
+@using ItIsPizzaDay.Client.Pages.OrdersComponent
 @inherits CartComponent
 
 <h1>Carrello</h1>
 
-<div class="row">
-    <input type="button" class="btn btn-outline-dark" value="Ordina" onclick="@(() => DoOrder())"/>
-    <input type="button" class="btn btn-outline-dark" value="Svuota Carrelo" onclick="@(() => Clear())"/>
+<div class="row mb-2">
+    <input type="button" class="btn btn-block btn-outline-dark mr-2" value="Ordina" disabled="@(FoodsOrder.Count < 1)" onclick="@(() => DoOrder())"/>
+    <input type="button" class="btn btn-block btn-outline-dark" value="Svuota Carrelo" disabled="@(FoodsOrder.Count < 1)" onclick="@(() => Clear())"/>
 </div>
 <div class="row">
     <table class="table">

@@ -2,7 +2,6 @@ namespace ItIsPizzaDay.Client.Pages.OrdersComponent
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     using ItIsPizzaDay.Shared.Models;
     using Microsoft.AspNetCore.Blazor.Components;
@@ -13,15 +12,21 @@ namespace ItIsPizzaDay.Client.Pages.OrdersComponent
         [Inject]
         private IReadService Reader { get; set; }
 
+        [Inject]
+        private IWriteService Writer { get; set; }
+
         protected ICollection<Order> Orders { get; set; } = new List<Order>();
 
         protected override async Task OnInitAsync()
         {
-            Orders = (await Reader.Order.GetAllAsync());
+            Orders = await Reader.Order.GetAllAsync();
         }
 
-        protected void Delete(Guid id) 
+        protected async Task Delete(Guid id)
         {
+            await Writer.Order.Delete(id);
+
+            Orders.Remove(new Order { Id = id });
         }
     }
 }

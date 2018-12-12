@@ -64,13 +64,12 @@
                 entity.HasMany(d => d.FoodIngredient)
                     .WithOne()
                     .HasForeignKey(d => d.Food)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("food_ingredient_food_id_fk");
 
                 entity.Property(e => e.Visible)
                     .IsRequired()
-                    .HasColumnName("visible")
-                    .HasDefaultValueSql("true");
+                    .HasColumnName("visible");
 
                 entity.HasQueryFilter(food => food.Visible);
             });
@@ -84,11 +83,11 @@
                 entity.Property(e => e.Food).HasColumnName("food");
 
                 entity.Property(e => e.Ingredient).HasColumnName("ingredient");
-
+                
                 entity.HasOne(d => d.IngredientNavigation)
                     .WithMany()
                     .HasForeignKey(d => d.Ingredient)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("food_ingredient_ingredient_id_fk");
             });
 
@@ -112,7 +111,8 @@
                 entity.HasOne(d => d.OrderNavigation)
                     .WithMany(p => p.FoodOrder)
                     .HasForeignKey(d => d.Order)
-                    .HasConstraintName("food_order_order_fkey");
+                    .HasConstraintName("food_order_order_fkey")
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<FoodOrderIngredient>(entity =>
@@ -132,13 +132,13 @@
                 entity.HasOne(d => d.FoodOrderNavigation)
                     .WithMany(p => p.FoodOrderIngredient)
                     .HasForeignKey(d => d.FoodOrder)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("food_order_ingredient_food_order_fkey");
 
                 entity.HasOne(d => d.IngredientNavigation)
                     .WithMany(p => p.FoodOrderIngredient)
                     .HasForeignKey(d => d.Ingredient)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("food_order_ingredient_ingredient_fkey");
             });
 
@@ -186,7 +186,7 @@
                 entity.HasOne(d => d.MuppetNavigation)
                     .WithMany(p => p.Order)
                     .HasForeignKey(d => d.Muppet)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("order_muppet_fkey");
             });
 

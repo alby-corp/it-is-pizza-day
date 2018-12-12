@@ -34,6 +34,6 @@ namespace ItIsPizzaDay.Client.Services.Abstract
             }
         }
 
-        public async Task Remove(Guid id) => await _http.DeleteAsync($"{_baseUrl}/{typeof(T).Name}/Delete/{id}");
+        public async Task Delete(Guid id) => await _http.DeleteAsync($"{_baseUrl}/{typeof(T).Name}/Delete/{id}");
     }
 }
