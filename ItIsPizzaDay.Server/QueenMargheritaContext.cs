@@ -2,10 +2,9 @@
 {
     using Generators;
     using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
     using Shared.Models;
 
-    public partial class QueenMargheritaContext : DbContext
+    public class QueenMargheritaContext : DbContext
     {
         public QueenMargheritaContext()
         {
@@ -27,11 +26,8 @@
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                // TODO: #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseNpgsql("Host=localhost;Port=5555;Database=QueenMargherita;Username=SamuraiTeam;Password=SamuraiTeam");
-            }
+            // TODO: #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5555;Database=QueenMargherita;Username=SamuraiTeam;Password=SamuraiTeam");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -54,13 +50,13 @@
 
                 entity.Property(e => e.Type)
                     .HasColumnName("type");
-                
+
                 entity.HasOne(d => d.TypeNavigation)
                     .WithMany(p => p.Food)
                     .HasForeignKey(d => d.Type)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("food_type_fkey");
-                
+
                 entity.HasMany(d => d.FoodIngredient)
                     .WithOne()
                     .HasForeignKey(d => d.Food)
@@ -83,7 +79,7 @@
                 entity.Property(e => e.Food).HasColumnName("food");
 
                 entity.Property(e => e.Ingredient).HasColumnName("ingredient");
-                
+
                 entity.HasOne(d => d.IngredientNavigation)
                     .WithMany()
                     .HasForeignKey(d => d.Ingredient)

@@ -26,7 +26,7 @@ namespace ItIsPizzaDay.Server
                     options.SerializerSettings.CheckAdditionalContent = true;
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddDbContext<QueenMargheritaContext>();
 
