@@ -113,10 +113,6 @@
                     .WithMany(p => p.FoodOrder)
                     .HasForeignKey(d => d.Order)
                     .HasConstraintName("food_order_order_fkey");
-
-                entity.Ignore(e => e.Price);
-
-                entity.Ignore(e => e.Ingredients);
             });
 
             modelBuilder.Entity<FoodOrderIngredient>(entity =>

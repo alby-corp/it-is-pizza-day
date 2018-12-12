@@ -17,30 +17,10 @@ namespace ItIsPizzaDay.Client.Pages.OrdersComponent
 
         protected override async Task OnInitAsync()
         {
-            Orders = (await Reader.Order.GetAllAsync()).ToList();
-
-            foreach (var order in Orders)
-            {
-                Console.WriteLine($"ORDER: {order.Id}");
-
-                foreach (var fo in order.FoodOrder)
-                {
-                    Console.WriteLine($"FOOD: {fo.FoodNavigation.Name}");
-
-                    foreach (var i in fo.Ingredients)
-                    {
-                        Console.WriteLine($"ING: {i}");
-                    }
-
-                    foreach (var foi in fo.FoodOrderIngredient)
-                    {
-                        Console.WriteLine($"INGREDIENT: {foi.IngredientNavigation.Name} {foi.Isremoval}");
-                    }
-                }
-            }
+            Orders = (await Reader.Order.GetAllAsync());
         }
 
-        protected void Delete(Guid id)
+        protected void Delete(Guid id) 
         {
         }
     }

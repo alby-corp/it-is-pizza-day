@@ -1,6 +1,8 @@
 @page "/orders"
-@using System.Globalization
 @inherits OrdersComponent
+
+@using System.Globalization
+@using ItIsPizzaDay.Shared.Models
 
 @foreach (var order in Orders.OrderByDescending(o => o.Date))
 {
@@ -14,7 +16,7 @@
                 </div>
 
                 <div class="col">
-                    <strong>Totale: </strong>@($"{order.FoodOrder.Sum(fo => fo.Price):N2}") &euro;
+                    <strong>Totale: </strong>@($"{order.FoodOrder.Sum(fo => fo.Price()):N2}") &euro;
                 </div>
 
                 <div class="col">
@@ -29,8 +31,8 @@
             @foreach (var foodOrder in order.FoodOrder)
             {
                 <div class="text-left mb-2">
-                    <h4 class="card-title">@($"{foodOrder.FoodNavigation.Name} - {foodOrder.Price:N2}") &euro;</h4>
-                    <h5 class="card-subtitle mb-2 text-muted">@($"{string.Join(", ", foodOrder.Ingredients)}")</h5>
+                    <h4 class="card-title">@($"{foodOrder.FoodNavigation.Name} - {foodOrder.Price():N2}") &euro;</h4>
+                    <h5 class="card-subtitle mb-2 text-muted">@($"{string.Join(", ", foodOrder.Ingredients())}")</h5>
                 </div>
 
                 if (foodOrder.FoodOrderIngredient.Count != 0)
