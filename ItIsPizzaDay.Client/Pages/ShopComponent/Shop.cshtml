@@ -3,24 +3,47 @@
 @inherits ShopComponent
 
 <h1>Shops</h1>
-<div class="row">
-    <table class="col-6">
-        @foreach (var type in Types)
-        {
-            <h2>@type.Description</h2>
-            foreach (var food in type.Food)
+
+@if (Types.Count < 1)
+{
+    <div class="row align-items-start">
+        <div class="sk-circle">
+            <div class="sk-circle1 sk-child"></div>
+            <div class="sk-circle2 sk-child"></div>
+            <div class="sk-circle3 sk-child"></div>
+            <div class="sk-circle4 sk-child"></div>
+            <div class="sk-circle5 sk-child"></div>
+            <div class="sk-circle6 sk-child"></div>
+            <div class="sk-circle7 sk-child"></div>
+            <div class="sk-circle8 sk-child"></div>
+            <div class="sk-circle9 sk-child"></div>
+            <div class="sk-circle10 sk-child"></div>
+            <div class="sk-circle11 sk-child"></div>
+            <div class="sk-circle12 sk-child"></div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row">
+        <table class="col">
+            @foreach (var type in Types)
             {
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">@food.Name - @food.Price.ToString("N2") &euro;</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">@string.Join(", ", food.FoodIngredient.Select(fi => fi.IngredientNavigation.Name))</h6>
-                        <a onclick=@(_ => OrderNow(food)) class="btn btn-outline-dark">Ordina Subito</a>
-                        <a onclick="@(_ => AddToCart(food))" class="btn btn-outline-dark">Aggiungi al Carrello</a>
-                        <NavLink href="@($"/shop/{food.Id}")" class="btn btn-outline-dark">Modifica</navlink>
+                <h2>@type.Description</h2>
+                foreach (var food in type.Food)
+                {
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">@food.Name - @food.Price.ToString("N2") &euro;</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">@string.Join(", ", food.FoodIngredient.Select(fi => fi.IngredientNavigation.Name))</h6>
+                            <a onclick=@(_ => OrderNow(food)) class="btn btn-outline-dark">Ordina Subito</a>
+                            <a onclick="@(_ => AddToCart(food))" class="btn btn-outline-dark">Aggiungi al Carrello</a>
+                            <NavLink href="@($"/shop/{food.Id}")" class="btn btn-outline-dark">Modifica</navlink>
+                        </div>
                     </div>
-                </div>
-                <br \>
+                    <br \>
+                }
             }
-        }
-    </table>
-</div>
+        </table>
+    </div>
+}

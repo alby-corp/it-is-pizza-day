@@ -4,6 +4,8 @@
 @using System.Globalization
 @using ItIsPizzaDay.Shared.Models
 
+<h1>Ordini</h1>
+
 @foreach (var order in Orders.OrderByDescending(o => o.Date))
 {
     <div class="card text-center mb-4">
