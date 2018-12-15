@@ -1,5 +1,13 @@
-.sk-circle {
+.sk-circle-root {
     margin: 100px auto;
+    width: 198px;
+}
+.sk-circle-text {
+    font-weight: 500;
+    font-size: 48px;
+    margin: 0 8px;
+}
+.sk-circle {
     width: 40px;
     height: 40px;
     position: relative;
