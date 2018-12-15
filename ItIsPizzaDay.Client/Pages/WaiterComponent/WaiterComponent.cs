@@ -105,6 +105,11 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
         
         private void UpdateBetterDeals()
         {
+            if (Food.Type.ToString() != "2ee7bc5b-1ec1-4e4b-b457-1206fd1cbdd3")
+            {
+                return;
+            }
+            
             BetterDeals = FoodOrderService.LowestPrice(CustomIngredients, Foods)
                 .Where(order => order.Price() < TotalPrice)
                 .ToList();
