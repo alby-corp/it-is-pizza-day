@@ -1,11 +1,22 @@
-@inherits BlazorLayoutComponent
+@inherits MainLayoutComponent
 
 <div class="sidebar">
     <navmenu/>
 </div>
 
 <div class="main">
-    <div class="top-row px-4"><cartbadge></cartbadge></div>
+    <div class="top-row px-4">
+        <cartbadge></cartbadge>
+        @if (User != null)
+        {
+            <span>Benvenuto, @User.Name.</span>
+            <button class="btn btn-dark" onclick="@SignOut">Signout</button>
+        }
+        else
+        {
+            <button class="btn btn-success" onclick="@SignIn">Signin</button>
+        }
+    </div>
 
     <div class="content px-4">
         @Body

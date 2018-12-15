@@ -2,6 +2,7 @@ namespace ItIsPizzaDay.Server.Controllers
 {
     using System;
     using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Repositories.Structure;
 
@@ -30,21 +31,21 @@ namespace ItIsPizzaDay.Server.Controllers
         [HttpGet]
         public virtual async Task<IActionResult> GetAll() => Ok(await _repository.GetAll());
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public virtual async Task<IActionResult> Create([FromBody] T entity)
         {
             await _repository.Create(entity);
             return Ok(entity);
         }
 
-        [HttpPut]
+        [HttpPut, Authorize]
         public virtual async Task<IActionResult> Update([FromBody] T entity)
         {
             await _repository.Update(entity);
             return Ok(entity);
         }
 
-        [HttpDelete]
+        [HttpDelete, Authorize]
         public virtual async Task<IActionResult> Delete(Guid id)
         {
             await _repository.Delete(id);

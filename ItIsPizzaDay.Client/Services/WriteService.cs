@@ -9,13 +9,15 @@ namespace ItIsPizzaDay.Client.Services
     {
         private readonly HttpClient _http;
         private readonly Uri _baseUrl;
+        private readonly AuthService _authService;
 
-        public WriteService(HttpClient http, Uri baseUrl)
+        public WriteService(HttpClient http, Uri baseUrl, AuthService authService)
         {
             _http = http;
             _baseUrl = baseUrl;
+            _authService = authService;
         }
 
-        public WriteEndPoint<Order> Order => new WriteEndPoint<Order>(_http, _baseUrl);
+        public WriteEndPoint<Order> Order => new WriteEndPoint<Order>(_http, _baseUrl, _authService);
     }
 }

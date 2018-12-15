@@ -2,6 +2,7 @@ namespace ItIsPizzaDay.Server
 {
     using System.Linq;
     using System.Net.Mime;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Blazor.Server;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -40,6 +41,13 @@ namespace ItIsPizzaDay.Server
                     WasmMediaTypeNames.Application.Wasm
                 });
             });
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = "https://login.microsoftonline.com/e64bac42-73e6-48b8-abae-54b44ceed0da/v2.0";
+                    options.Audience  = "97b8377a-5c1c-4b1c-a630-6299b71718fe";
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +62,7 @@ namespace ItIsPizzaDay.Server
 
             app.Map("/api", api =>
             {
+                api.UseAuthentication();
                 api.UseMvc(routes =>
                 {
                     routes.MapRoute("default", "{controller}/{action}/{id?}");
