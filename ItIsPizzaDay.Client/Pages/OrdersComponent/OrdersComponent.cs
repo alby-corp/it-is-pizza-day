@@ -19,7 +19,7 @@ namespace ItIsPizzaDay.Client.Pages.OrdersComponent
 
         protected override async Task OnInitAsync()
         {
-            Orders = await Reader.Order.GetAllAsync();
+            Orders = await Reader.Order.GetOwnOrdersAsync();
         }
 
         protected async Task Delete(Guid id)

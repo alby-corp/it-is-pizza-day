@@ -7,6 +7,6 @@ namespace ItIsPizzaDay.Client.Services.Abstract
         ReadEndPoint<Food> Food { get; }
         ReadEndPoint<Ingredient> Ingredient { get; }
         ReadEndPoint<Type> Type { get; }
-        ReadEndPoint<Order> Order { get; }
+        OrderReadEndPoint Order { get; }
     }
 }

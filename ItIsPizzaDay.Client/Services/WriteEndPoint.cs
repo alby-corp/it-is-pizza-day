@@ -7,18 +7,15 @@ namespace ItIsPizzaDay.Client.Services.Abstract
     using ItIsPizzaDay.Shared.Models;
     using Microsoft.AspNetCore.Blazor;
 
-    public class WriteEndPoint<T>
+    public class WriteEndPoint<T> : EndPoint
         where T : Entity, IEntity
     {
-        private readonly HttpClient _http;
         private readonly Uri _baseUrl;
-        private readonly AuthService _authService;
 
         public WriteEndPoint(HttpClient http, Uri baseUrl, AuthService authService)
+        :base(http, authService)
         {
-            _http = http;
             _baseUrl = baseUrl;
-            this._authService = authService;
         }
 
         public async Task Save(T entity)
@@ -42,17 +39,6 @@ namespace ItIsPizzaDay.Client.Services.Abstract
             await SetAuthorizationHeaders();
             
             await _http.DeleteAsync($"{_baseUrl}/{typeof(T).Name}/Delete/{id}");
-        }
-
-        private async Task SetAuthorizationHeaders()
-        {
-            var user = await _authService.TryGetUserAsync();
-
-            if (user != null)
-            {
-                _http.DefaultRequestHeaders.Remove("Authorization");
-                _http.DefaultRequestHeaders.Add("Authorization", $"Bearer {user.Token.Value}");
-            }
         }
     }
 }

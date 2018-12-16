@@ -1,6 +1,9 @@
 namespace ItIsPizzaDay.Server.Repositories
 {
+    using System;
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using Shared.Models;
     using Structure;
@@ -22,5 +25,10 @@ namespace ItIsPizzaDay.Server.Repositories
             .Include(order => order.FoodOrder)
             .ThenInclude(orders => orders.FoodOrderIngredient)
             .ThenInclude(collection => collection.IngredientNavigation);
+        
+        public Task<List<Order>> GetAllByUser(Guid userId) 
+            => GetEntities()
+                .Where(order => order.Muppet == userId)
+                .ToListAsync();
     }
 }

@@ -10,16 +10,18 @@ namespace ItIsPizzaDay.Client.Services
     {
         private readonly HttpClient _http;
         private readonly Uri _baseUrl;
+        private readonly AuthService _authService;
 
-        public ReadService(HttpClient http, Uri baseUrl)
+        public ReadService(HttpClient http, Uri baseUrl, AuthService authService)
         {
             _http = http;
             _baseUrl = baseUrl;
+            _authService = authService;
         }
 
-        public ReadEndPoint<Food> Food => new ReadEndPoint<Food>(_http, _baseUrl);
-        public ReadEndPoint<Ingredient> Ingredient => new ReadEndPoint<Ingredient>(_http, _baseUrl);
-        public ReadEndPoint<FoodType> Type => new ReadEndPoint<FoodType>(_http, _baseUrl);
-        public ReadEndPoint<Order> Order => new ReadEndPoint<Order>(_http, _baseUrl);
+        public ReadEndPoint<Food> Food => new ReadEndPoint<Food>(_http, _baseUrl, _authService);
+        public ReadEndPoint<Ingredient> Ingredient => new ReadEndPoint<Ingredient>(_http, _baseUrl, _authService);
+        public ReadEndPoint<FoodType> Type => new ReadEndPoint<FoodType>(_http, _baseUrl, _authService);
+        public OrderReadEndPoint Order => new OrderReadEndPoint(_http, _baseUrl, _authService);
     }
 }

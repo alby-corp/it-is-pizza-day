@@ -2,24 +2,30 @@ namespace ItIsPizzaDay.Client.Services
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Blazor;
 
-    public class ReadEndPoint<T>
+    public class ReadEndPoint<T> : EndPoint
     {
-        private readonly HttpClient _http;
         private readonly Uri _baseUrl;
 
-        public ReadEndPoint(HttpClient http, Uri baseUrl)
+        public ReadEndPoint(HttpClient http, Uri baseUrl, AuthService authService)
+            : base(http, authService)
         {
-            _http = http;
             _baseUrl = baseUrl;
         }
 
-        public async Task<T> GetAsync(Guid id) => await _http.GetJsonAsync<T>($@"{_baseUrl}/{typeof(T).Name}/Get/{id}");
+        public Task<T> GetAsync(Guid id)
+            => GetJson<T>($"Get/{id}");
 
-        public async Task<ICollection<T>> GetAllAsync() => (await _http.GetJsonAsync<ICollection<T>>($@"{_baseUrl}/{typeof(T).Name}/GetAll")).ToList();
+        public Task<ICollection<T>> GetAllAsync() 
+            => GetJson<ICollection<T>>("GetAll");
+        
+        protected async Task<TResult> GetJson<TResult>(string method)
+        {
+            await SetAuthorizationHeaders();
+            return await _http.GetJsonAsync<TResult>($@"{_baseUrl}/{typeof(T).Name}/{method}");
+        }
     }
 }

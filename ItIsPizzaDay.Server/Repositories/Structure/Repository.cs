@@ -15,7 +15,7 @@ namespace ItIsPizzaDay.Server.Repositories.Structure
 
         protected abstract IQueryable<T> _selector(IQueryable<T> selector);
 
-        private IQueryable<T> GetEntities() => _selector(_context.Set<T>());
+        protected IQueryable<T> GetEntities() => _selector(_context.Set<T>());
 
         protected Repository(QueenMargheritaContext context)
         {
