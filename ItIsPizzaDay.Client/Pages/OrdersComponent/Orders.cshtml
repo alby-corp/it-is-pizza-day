@@ -4,12 +4,16 @@
 @using System.Globalization
 @using ItIsPizzaDay.Shared.Models
 
-<h1>Ordini</h1>
+<div class="container">
+    <div class="row">
+        <h1 class="col">Ordini</h1>
+    </div>
 
 @foreach (var order in Orders.OrderByDescending(o => o.Date))
 {
+    <div class="row">
+    <div class="col">
     <div class="card text-center mb-4">
-
         <div class="card-header">
             <div class="row align-items-center">
 
@@ -68,8 +72,11 @@
             }
 
         </div>
-        <div class="card-footer text-muted">
-            <input type="button" class="btn btn-block btn-outline-danger" value="Annulla" onclick="@(() => Delete(order.Id))"/>
+            <div class="card-footer text-muted">
+                <input type="button" class="btn btn-block btn-outline-danger" value="Annulla" onclick="@(() => Delete(order.Id))"/>
+            </div>
         </div>
     </div>
+    </div>
 }
+</div>

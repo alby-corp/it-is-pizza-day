@@ -1,6 +1,5 @@
 namespace ItIsPizzaDay.Client.Pages.CartBadgeComponent
 {
-    using System.Linq;
     using Microsoft.AspNetCore.Blazor.Components;
     using Services.Abstract;
 
@@ -15,7 +14,7 @@ namespace ItIsPizzaDay.Client.Pages.CartBadgeComponent
         {
             CartService.Subscribe(items =>
             {
-                TotalItems = items.Count();
+                TotalItems = items.Count;
                 StateHasChanged();
             });
         }

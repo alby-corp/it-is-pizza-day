@@ -1,91 +1,101 @@
 @using ItIsPizzaDay.Shared.Models
 @inherits WaiterComponent
 
-@if (BetterDeals.Any())
-{
-    <div class="alert alert-primary" role="alert">
-        <h5>
-            @(BetterDeals.Count == 1 ? "Esiste una pizza" : $"Esistono {BetterDeals.Count} pizze") con gli stessi ingredienti a prezzo inferiore.
-        </h5>
-        @foreach (var food in BetterDeals)
-        {
-            <hr/>
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col">
-                        <div><h5>@food.FoodNavigation.Name - @food.Price().ToString("N2") &euro;</h5></div>
-                        @if (food.FoodOrderIngredient.Any(ingredient => !ingredient.Isremoval))
-                        {
-                            <div class="text-success">
-                                <span class="oi oi-plus"></span>
-                                @string.Join(", ", food.FoodOrderIngredient.Where(ingredient => !ingredient.Isremoval).Select(ingredient => ingredient.IngredientNavigation.Name))
+<div class="container">
+    @if (BetterDeals.Any())
+    {
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-primary" role="alert">
+                    <h5>
+                        @(BetterDeals.Count == 1 ? "Esiste una pizza" : $"Esistono {BetterDeals.Count} pizze") con gli stessi ingredienti a prezzo inferiore.
+                    </h5>
+                    @foreach (var food in BetterDeals)
+                    {
+                        <hr/>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col">
+                                    <div><h5>@food.FoodNavigation.Name - @food.Price().ToString("N2") &euro;</h5></div>
+                                    @if (food.FoodOrderIngredient.Any(ingredient => !ingredient.Isremoval))
+                                    {
+                                        <div class="text-success">
+                                            <span class="oi oi-plus"></span>
+                                            @string.Join(", ", food.FoodOrderIngredient.Where(ingredient => !ingredient.Isremoval).Select(ingredient => ingredient.IngredientNavigation.Name))
+                                        </div>
+                                    }
+                                    @if (food.FoodOrderIngredient.Any(ingredient => ingredient.Isremoval))
+                                    {
+                                        <div class="text-danger">
+                                            <span class="oi oi-minus"></span>
+                                            @string.Join(", ", food.FoodOrderIngredient.Where(ingredient => ingredient.Isremoval).Select(ingredient => ingredient.IngredientNavigation.Name))
+                                        </div>
+                                    }
+                                </div>
+                                <div class="col-auto text-right">
+                                    <button class="btn btn-primary" onclick="@(() => OrderNow(food))">Ordina Subito</button>
+                                    <button class="btn btn-primary" onclick="@(() => AddToCart(food))">Aggiungi al Carello</button>
+                                </div>
                             </div>
-                        }
-                        @if (food.FoodOrderIngredient.Any(ingredient => ingredient.Isremoval))
-                        {
-                            <div class="text-danger">
-                                <span class="oi oi-minus"></span>
-                                @string.Join(", ", food.FoodOrderIngredient.Where(ingredient => ingredient.Isremoval).Select(ingredient => ingredient.IngredientNavigation.Name))
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+
+                    <h3 class="card-title">@Food.Name - @TotalPrice.ToString("N2") &euro;</h3>
+                    <h4 class="card-subtitle mb-2 text-muted">@string.Join(", ", CustomIngredients.Select(i => i.Name))</h4>
+
+                    <br/>
+
+                    <button class="btn btn-outline-dark" onclick="@(() => OrderNow())">Ordina Subito</button>
+                    <button class="btn btn-outline-dark" onclick="@(() => AddToCart())">Aggiungi al Carrello</button>
+
+                    <br/>
+
+                    <div class="mt-5">
+
+                        <h5 class="card-subtitle mb-2 text-muted">Rimozioni</h5>
+                        <ul class="list-group list-group-flush">
+
+                            @foreach (var ingredient in CustomIngredients)
+                            {
+                                <li class="list-group-item ingredient-remove-li" onclick=@(_ => Remove(ingredient)) title="Rimuovi Ingrediente!">
+                                    @ingredient.Name <span class="oi oi-minus float-right" data-toggle="tooltip" aria-hidden="true"></span>
+                                </li>
+                            }
+
+                        </ul>
+
+                        <br/>
+
+                        <h5 class="card-subtitle mb-2 text-muted">Supplementi</h5>
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="filter">Search</span>
                             </div>
-                        }
-                    </div>
-                    <div class="col-auto text-right">
-                        <button class="btn btn-primary" onclick="@(() => OrderNow(food))">Ordina Subito</button>
-                        <button class="btn btn-primary" onclick="@(() => AddToCart(food))">Aggiungi al Carello</button>
+                            <input ref="filterInput" type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search" onkeyup="@(_ => FilterChanged())"/>
+                        </div>
+
+                        <ul class="list-group list-group-flush">
+                            @foreach (var supplement in Ingredients.Where(ingredient => ingredient.Name.ToUpper().Contains(Filter.ToUpper())).OrderBy(i => i.Name))
+                            {
+                                <li class="list-group-item ingredient-add-li" onclick=@(_ => Add(supplement)) title="Aggiungi Ingrediente!">
+                                    @supplement.Name - @supplement.Price?.ToString("N2") &euro;<span class="oi oi-plus float-right" data-toggle="tooltip" aria-hidden="true"></span>
+                                </li>
+                            }
+                        </ul>
+
                     </div>
                 </div>
             </div>
-        }
-    </div>
-}
-
-<div class="card">
-    <div class="card-body">
-
-        <h3 class="card-title">@Food.Name - @TotalPrice.ToString("N2") &euro;</h3>
-        <h4 class="card-subtitle mb-2 text-muted">@string.Join(", ", CustomIngredients.Select(i => i.Name))</h4>
-
-        <br/>
-
-        <button class="btn btn-outline-dark" onclick="@(() => OrderNow())">Ordina Subito</button>
-        <button class="btn btn-outline-dark" onclick="@(() => AddToCart())">Aggiungi al Carrello</button>
-
-        <br/>
-
-        <div class="card-body">
-
-            <h5 class="card-subtitle mb-2 text-muted">Rimozioni</h5>
-            <ul class="list-group list-group-flush">
-
-                @foreach (var ingredient in CustomIngredients)
-                {
-                    <li class="list-group-item ingredient-remove-li" onclick=@(_ => Remove(ingredient)) title="Rimuovi Ingrediente!">
-                        @ingredient.Name <span class="oi oi-minus float-right" data-toggle="tooltip" aria-hidden="true"></span>
-                    </li>
-                }
-
-            </ul>
-
-            <br/>
-
-            <h5 class="card-subtitle mb-2 text-muted">Supplementi</h5>
-
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="filter">Search</span>
-                </div>
-                <input ref="filterInput" type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search" onkeyup="@(_ => FilterChanged())"/>
-            </div>
-
-            <ul class="list-group list-group-flush">
-                @foreach (var supplement in Ingredients.Where(ingredient => ingredient.Name.ToUpper().Contains(Filter.ToUpper())).OrderBy(i => i.Name))
-                {
-                    <li class="list-group-item ingredient-add-li" onclick=@(_ => Add(supplement)) title="Aggiungi Ingrediente!">
-                        @supplement.Name - @supplement.Price?.ToString("N2") &euro;<span class="oi oi-plus float-right" data-toggle="tooltip" aria-hidden="true"></span>
-                    </li>
-                }
-            </ul>
-
         </div>
     </div>
 </div>

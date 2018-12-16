@@ -1,24 +1,90 @@
 @inherits MainLayoutComponent
 
 <div class="sidebar">
-    <navmenu/>
+    <div class="top-row pl-4 navbar navbar-dark">
+        <a class="navbar-brand" href="">It Is Pizza Day</a>
+        
+        <button class="navbar-toggler" onclick=@ToggleNavMenu>
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+
+    <div class=@(_collapseNavMenu ? "collapse" : null) onclick=@ToggleNavMenu>
+        <ul class="nav flex-column">
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/" Match="@NavLinkMatch.All">
+                    <span class="oi oi-home" aria-hidden="true"></span> Home
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="shop">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Shop
+                </NavLink>
+            </li>
+            <li class="nav-item px-3 d-md-none">
+                <NavLink class="nav-link" href="cart">
+                    <span class="oi oi-cart" aria-hidden="true"></span> Carrello 
+                    <span class="badge badge-light ml-1">@TotalCartItems</span>
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="orders">
+                    <span class="oi oi-thumb-up" aria-hidden="true"></span> Ordini
+                </NavLink>
+            </li>
+            <li class="nav-item px-3 d-md-none">
+                @if (User != null)
+                {
+                    <a class="nav-link" onclick="@SignOut">
+                        <span class="oi oi-account-logout" aria-hidden="true"></span> Signout
+                    </a>
+                }
+                else
+                {
+                    <a class="nav-link" onclick="@SignIn">
+                        <span class="oi oi-account-login" aria-hidden="true"></span> Signin
+                    </a>
+                }
+            </li>
+        </ul>
+    </div>
 </div>
 
 <div class="main">
-    <div class="top-row px-4">
-        <cartbadge></cartbadge>
-        @if (User != null)
-        {
-            <span>Benvenuto, @User.Name.</span>
-            <button class="btn btn-dark" onclick="@SignOut">Signout</button>
-        }
-        else
-        {
-            <button class="btn btn-success" onclick="@SignIn">Signin</button>
-        }
+    <div class="top-row">
+        
+        <div class="col-auto">
+            @if (User != null)
+            {
+                <span>Benvenuto, <strong>@User.Name.</strong></span>
+            }
+        </div>
+        <div class="col"></div>
+        <div class="col-auto">
+            <cartbadge></cartbadge>
+
+            @if (User != null)
+            {
+                <button class="btn btn-sm btn-dark ml-4" onclick="@SignOut">Signout</button>
+            }
+            else
+            {
+                <button class="btn btn-sm btn-success ml-4" onclick="@SignIn">Signin</button>
+            }
+        </div>
     </div>
 
-    <div class="content px-4">
+    <div class="content">
         @Body
     </div>
 </div>
+
+
+@functions {
+    private bool _collapseNavMenu = true;
+
+    void ToggleNavMenu()
+    {
+        _collapseNavMenu = !_collapseNavMenu;
+    }
+}

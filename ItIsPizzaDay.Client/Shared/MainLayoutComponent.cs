@@ -5,13 +5,28 @@ namespace ItIsPizzaDay.Client.Shared
     using Microsoft.AspNetCore.Blazor.Layouts;
     using Models;
     using Services;
+    using Services.Abstract;
 
     public class MainLayoutComponent : BlazorLayoutComponent
     {
         [Inject]
         AuthService AuthService { get; set; }
         
+        [Inject]
+        private ICartService CartService { get; set; }
+        
         protected AuthenticatedUser User { get; set; }
+        
+        protected int TotalCartItems { get; set; }
+
+        protected override void OnInit()
+        {
+            CartService.Subscribe(items =>
+            {
+                TotalCartItems = items.Count;
+                StateHasChanged();
+            });
+        }
 
         protected override async Task OnInitAsync()
         {

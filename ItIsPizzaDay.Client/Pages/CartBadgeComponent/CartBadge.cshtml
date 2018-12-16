@@ -1,3 +1,7 @@
 @inherits CartBadgeComponent
 
-<span class="badge badge-dark">@TotalItems</span><span class="oi oi-cart"></span>
+<NavLink class="btn btn-sm btn-dark" href="cart">
+    <span class="oi oi-cart"></span>
+    <span class="mr-1 ml-1">Carrello</span>
+    <span class="badge badge-light">@TotalItems</span>
+</NavLink>
