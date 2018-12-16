@@ -1,7 +1,6 @@
-namespace ItIsPizzaDay.Client.Pages.SignedIn
+namespace ItIsPizzaDay.Client.Pages.SignedInComponent
 {
     using Microsoft.AspNetCore.Blazor.Components;
-    using Microsoft.AspNetCore.Blazor.Services;
 
     public class SignedInComponent : BlazorComponent
     {
