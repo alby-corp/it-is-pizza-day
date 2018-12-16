@@ -3,15 +3,17 @@ using System;
 using ItIsPizzaDay.Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ItIsPizzaDay.Server.Migrations
 {
     [DbContext(typeof(QueenMargheritaContext))]
-    partial class QueenMargheritaContextModelSnapshot : ModelSnapshot
+    [Migration("20181213150159_muppet.isAdmin")]
+    partial class muppetisAdmin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

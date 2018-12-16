@@ -15,5 +15,11 @@ namespace ItIsPizzaDay.Server
 
             return null;
         }
+
+        public static string TryGetName(this ClaimsPrincipal principal)
+            => principal.FindFirstValue("name");       
+        
+        public static bool GetIsAdmin(this ClaimsPrincipal principal)
+            => principal.IsInRole(Role.Admin);
     }
 }

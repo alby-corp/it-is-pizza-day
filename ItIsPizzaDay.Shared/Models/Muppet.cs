@@ -12,5 +12,7 @@
         public string RealName { get; set; }
 
         public ICollection<Order> Order { get; set; }
+        
+        public bool IsAdmin { get; set; }
     }
 }

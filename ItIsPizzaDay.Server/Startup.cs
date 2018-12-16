@@ -3,6 +3,7 @@ namespace ItIsPizzaDay.Server
     using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
     using System.Net.Mime;
+    using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Blazor.Server;
     using Microsoft.AspNetCore.Builder;
@@ -42,6 +43,8 @@ namespace ItIsPizzaDay.Server
                     WasmMediaTypeNames.Application.Wasm
                 });
             });
+
+            services.AddTransient<IClaimsTransformation, ClaimsTransformation>();
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 

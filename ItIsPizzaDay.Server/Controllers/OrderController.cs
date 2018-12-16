@@ -17,7 +17,7 @@ namespace ItIsPizzaDay.Server.Controllers
             this.repository = repository;
         }
 
-        [Authorize]
+        [Authorize(Roles = Role.Admin)]
         public override Task<IActionResult> GetAll() 
             => base.GetAll();
 
@@ -33,7 +33,7 @@ namespace ItIsPizzaDay.Server.Controllers
             
             return await base.Create(entity);
         }
-
+        
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<IList<Order>>> GetOwnOrders()
