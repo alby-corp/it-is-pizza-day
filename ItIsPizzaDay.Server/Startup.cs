@@ -1,5 +1,6 @@
 namespace ItIsPizzaDay.Server
 {
+    using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
     using System.Net.Mime;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -41,6 +42,8 @@ namespace ItIsPizzaDay.Server
                     WasmMediaTypeNames.Application.Wasm
                 });
             });
+
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
