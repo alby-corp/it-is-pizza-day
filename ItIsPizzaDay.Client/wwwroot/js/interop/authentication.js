@@ -13,6 +13,7 @@
     self.authentication = {
         logout: function(applicationConfig) {
             initMSAL(applicationConfig);
+            userAgentApplication.clearCache();
             userAgentApplication.logout();
             return "";
         },
@@ -50,6 +51,7 @@
         loginRedirect: function(applicationConfig) {
 
             initMSAL(applicationConfig);
+            userAgentApplication.clearCache();
             userAgentApplication.loginRedirect(applicationConfig.scopes);
             return "";
         }
