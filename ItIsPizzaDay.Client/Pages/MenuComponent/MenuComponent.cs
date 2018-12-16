@@ -6,7 +6,6 @@ namespace ItIsPizzaDay.Client.Pages.MenuComponent
     using System.Threading.Tasks;
     using ItIsPizzaDay.Shared.Models;
     using Microsoft.AspNetCore.Blazor.Components;
-    using Services;
     using Services.Abstract;
 
     public class MenuComponent : BlazorComponent
@@ -23,7 +22,7 @@ namespace ItIsPizzaDay.Client.Pages.MenuComponent
 
         protected Food Food { get; set; } = new Food();
 
-        protected override async Task OnParametersSetAsync()
+        protected override async Task OnInitAsync()
         {
             Ingredients = await Reader.Ingredient.GetAllAsync();
             

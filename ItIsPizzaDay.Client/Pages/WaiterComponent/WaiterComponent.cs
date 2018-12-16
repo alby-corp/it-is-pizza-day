@@ -55,6 +55,8 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
 
             CustomIngredients = originalIngredients.ToList();
             Ingredients = Ingredients.Except(originalIngredients.ToList()).ToList();
+            
+            UpdateBetterDeals();
         }
 
         protected void Add(Ingredient ingredient)
