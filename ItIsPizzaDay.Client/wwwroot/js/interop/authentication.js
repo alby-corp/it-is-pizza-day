@@ -23,9 +23,10 @@
                 userAgentApplication.acquireTokenSilent(applicationConfig.scopes)
                     .then(function (token) {
                         var user = userAgentApplication.getUser();
-                        var expires = new Date(new Date().getTime() + (user.idToken.exp * 1000));
+                        var expires = new Date(user.idToken.exp * 1000);
 
-                        const now = (+new Date() / 1000) | 0;
+                        const now = new Date();
+
                         if (now <= expires) {
                             resolve({
                                 idToken: token,
