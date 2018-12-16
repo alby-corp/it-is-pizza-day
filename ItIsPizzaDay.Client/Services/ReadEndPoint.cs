@@ -5,15 +5,16 @@ namespace ItIsPizzaDay.Client.Services
     using System.Net.Http;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Blazor;
+    using Models;
 
     public class ReadEndPoint<T> : EndPoint
     {
         private readonly Uri _baseUrl;
 
-        public ReadEndPoint(HttpClient http, Uri baseUrl, AuthService authService)
+        public ReadEndPoint(HttpClient http, ApiConfig config, AuthService authService)
             : base(http, authService)
         {
-            _baseUrl = baseUrl;
+            _baseUrl = config.BaseUrl;
         }
 
         public Task<T> GetAsync(Guid id)

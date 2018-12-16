@@ -1,5 +1,6 @@
 namespace ItIsPizzaDay.Server
 {
+    using System;
     using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
     using System.Net.Mime;
@@ -10,6 +11,7 @@ namespace ItIsPizzaDay.Server
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.ResponseCompression;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using Middlewares;
     using Newtonsoft.Json;
@@ -31,7 +33,15 @@ namespace ItIsPizzaDay.Server
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddDbContext<QueenMargheritaContext>();
+            services.AddDbContext<QueenMargheritaContext>(options =>
+            {
+                var heroku = Heroku.TryParseConnectionString(Environment.GetEnvironmentVariable("DATABASE_URL"));
+                var local = "Host=localhost;Port=5555;Database=QueenMargherita;Username=SamuraiTeam;Password=SamuraiTeam";
+                
+                var connectionString = heroku ?? local;
+                
+                options.UseNpgsql(connectionString);
+            });
 
             services.AddRepositories();
 

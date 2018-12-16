@@ -5,11 +5,12 @@ namespace ItIsPizzaDay.Client.Services
     using System.Net.Http;
     using System.Threading.Tasks;
     using ItIsPizzaDay.Shared.Models;
+    using Models;
 
     public class OrderReadEndPoint : ReadEndPoint<Order>
     {
-        public OrderReadEndPoint(HttpClient http, Uri baseUrl, AuthService authService)
-            : base(http, baseUrl, authService)
+        public OrderReadEndPoint(HttpClient http, ApiConfig config, AuthService authService)
+            : base(http, config, authService)
         {
         }
         

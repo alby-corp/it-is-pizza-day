@@ -6,16 +6,17 @@ namespace ItIsPizzaDay.Client.Services.Abstract
     using ItIsPizzaDay.Shared.Abstract;
     using ItIsPizzaDay.Shared.Models;
     using Microsoft.AspNetCore.Blazor;
+    using Models;
 
     public class WriteEndPoint<T> : EndPoint
         where T : Entity, IEntity
     {
         private readonly Uri _baseUrl;
 
-        public WriteEndPoint(HttpClient http, Uri baseUrl, AuthService authService)
+        public WriteEndPoint(HttpClient http, ApiConfig config, AuthService authService)
         :base(http, authService)
         {
-            _baseUrl = baseUrl;
+            _baseUrl = config.BaseUrl;
         }
 
         public async Task Save(T entity)
