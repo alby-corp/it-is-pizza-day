@@ -1,82 +1,83 @@
 @page "/orders"
-@inherits OrdersComponent
 
 @using System.Globalization
 @using ItIsPizzaDay.Shared.Models
+
+@inherits OrdersComponent
 
 <div class="container">
     <div class="row">
         <h1 class="col">Ordini</h1>
     </div>
 
-@foreach (var order in Orders.OrderByDescending(o => o.Date))
-{
-    <div class="row">
-    <div class="col">
-    <div class="card text-center mb-4">
-        <div class="card-header">
-            <div class="row align-items-center">
+    @foreach (var order in Orders.OrderByDescending(o => o.Date))
+    {
+        <div class="row">
+            <div class="col">
+                <div class="card text-center mb-4">
+                    <div class="card-header">
+                        <div class="row align-items-center">
 
-                <div class="col">
-                    <strong>Ordine effettuato il: </strong>@order.Date?.ToString("MM/dd/yyyy HH:mm", CultureInfo.InvariantCulture)
-                </div>
+                            <div class="col">
+                                <strong>Ordine effettuato il: </strong>@order.Date?.ToString("MM/dd/yyyy HH:mm", CultureInfo.InvariantCulture)
+                            </div>
 
-                <div class="col">
-                    <strong>Totale: </strong>@($"{order.FoodOrder.Sum(fo => fo.Price()):N2}") &euro;
-                </div>
+                            <div class="col">
+                                <strong>Totale: </strong>@($"{order.FoodOrder.Sum(fo => fo.Price()):N2}") &euro;
+                            </div>
 
-                <div class="col">
-                    <strong>Ordine: </strong>@order.Id
-                </div>
+                            <div class="col">
+                                <strong>Ordine: </strong>@order.Id
+                            </div>
 
-            </div>
-        </div>
-
-        <div class="card-body">
-
-            @foreach (var foodOrder in order.FoodOrder)
-            {
-                <div class="text-left mb-2">
-                    <h4 class="card-title">@($"{foodOrder.FoodNavigation.Name} - {foodOrder.Price():N2}") &euro;</h4>
-                    <h5 class="card-subtitle mb-2 text-muted">@($"{string.Join(", ", foodOrder.Ingredients())}")</h5>
-                </div>
-
-                if (foodOrder.FoodOrderIngredient.Count != 0)
-                {
-                    <div class="card-text row align-items-start">
-                        <div class="col">
-                            <h6>
-                                <strong>Supplementi</strong>
-                            </h6>
-                            <ul class="list-group list-group-flush">
-                                @foreach (var foi in foodOrder.FoodOrderIngredient.Where(foi => !foi.Isremoval))
-                                {
-                                    <li class="list-group-item">@foi.IngredientNavigation.Name</li>
-                                }
-                            </ul>
-                        </div>
-
-                        <div class="col">
-                            <h6>
-                                <strong>Rimozioni</strong>
-                            </h6>
-                            <ul class="list-group list-group-flush">
-                                @foreach (var foi in foodOrder.FoodOrderIngredient.Where(foi => foi.Isremoval))
-                                {
-                                    <li class="list-group-item">@foi.IngredientNavigation.Name</li>
-                                }
-                            </ul>
                         </div>
                     </div>
-                }
-            }
 
-        </div>
-            <div class="card-footer text-muted">
-                <input type="button" class="btn btn-block btn-outline-danger" value="Annulla" onclick="@(() => Delete(order.Id))"/>
+                    <div class="card-body">
+
+                        @foreach (var foodOrder in order.FoodOrder)
+                        {
+                            <div class="text-left mb-2">
+                                <h4 class="card-title">@($"{foodOrder.FoodNavigation.Name} - {foodOrder.Price():N2}") &euro;</h4>
+                                <h5 class="card-subtitle mb-2 text-muted">@($"{string.Join(", ", foodOrder.Ingredients().Select(i => i.Name))}")</h5>
+                            </div>
+
+                            if (foodOrder.FoodOrderIngredient.Count != 0)
+                            {
+                                <div class="card-text row align-items-start">
+                                    <div class="col">
+                                        <h6>
+                                            <strong>Supplementi</strong>
+                                        </h6>
+                                        <ul class="list-group list-group-flush">
+                                            @foreach (var foi in foodOrder.FoodOrderIngredient.Where(foi => !foi.Isremoval))
+                                            {
+                                                <li class="list-group-item">@foi.IngredientNavigation.Name</li>
+                                            }
+                                        </ul>
+                                    </div>
+
+                                    <div class="col">
+                                        <h6>
+                                            <strong>Rimozioni</strong>
+                                        </h6>
+                                        <ul class="list-group list-group-flush">
+                                            @foreach (var foi in foodOrder.FoodOrderIngredient.Where(foi => foi.Isremoval))
+                                            {
+                                                <li class="list-group-item">@foi.IngredientNavigation.Name</li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            }
+                        }
+
+                    </div>
+                    <div class="card-footer text-muted">
+                        <input type="button" class="btn btn-block btn-outline-danger" value="Annulla" onclick="@(() => Delete(order.Id))"/>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    </div>
-}
+    }
 </div>

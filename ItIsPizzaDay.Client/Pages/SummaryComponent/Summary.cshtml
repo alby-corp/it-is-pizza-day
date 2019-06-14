@@ -1,0 +1,30 @@
+@page "/summary";
+@inherits SummaryComponent;
+
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Piatto</th>
+        <th scope="col">Supplementi</th>
+        <th scope="col">Rimozioni</th>
+        <th scope="col">Cibo</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    @foreach (var s in Summaries)
+    {
+        <tr>
+            <td>1</td>
+            <td>@s.Food.Name</td>
+            <td>@string.Join("; ", s.Supplements)</td>
+            <td>@string.Join("; ", s.Removals)</td>
+            <td>@s.Count</td>
+        </tr>
+    }
+
+
+    </tbody>
+</table>
