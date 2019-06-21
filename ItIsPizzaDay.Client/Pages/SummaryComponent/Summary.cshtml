@@ -9,7 +9,7 @@
         <th scope="col">Piatto</th>
         <th scope="col">Supplementi</th>
         <th scope="col">Rimozioni</th>
-        <th scope="col">Cibo</th>
+        <th scope="col">Prezzo</th>
     </tr>
     </thead>
     <tbody>
@@ -17,14 +17,18 @@
     @foreach (var s in Summaries)
     {
         <tr>
-            <td>1</td>
+            <td>@s.Count</td>
             <td>@s.Food.Name</td>
             <td>@string.Join("; ", s.Supplements)</td>
             <td>@string.Join("; ", s.Removals)</td>
-            <td>@s.Count</td>
+            <td>@s.Price.ToString("N") &euro;</td>
         </tr>
     }
 
 
     </tbody>
 </table>
+
+<h3 class="text-right p-4">
+    Totale: @Summaries.Sum(summary => summary.Price).ToString("N") &euro;
+</h3>

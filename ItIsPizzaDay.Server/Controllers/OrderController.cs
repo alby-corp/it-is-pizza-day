@@ -9,12 +9,12 @@ namespace ItIsPizzaDay.Server.Controllers
 
     public class OrderController : EntityController<Order>
     {
-        readonly OrderRepository repository;
+        readonly OrderRepository _repository;
 
         public OrderController(OrderRepository repository)
             : base(repository)
         {
-            this.repository = repository;
+           _repository = repository;
         }
 
         [Authorize(Roles = Role.Admin)]
@@ -44,7 +44,7 @@ namespace ItIsPizzaDay.Server.Controllers
                 return Unauthorized();
             }
             
-            return await repository.GetAllByUser(id.Value);
+            return await _repository.GetAllByUser(id.Value);
         }
     }
 }

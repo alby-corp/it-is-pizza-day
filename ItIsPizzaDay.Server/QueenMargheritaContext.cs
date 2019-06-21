@@ -126,7 +126,7 @@
                     .HasConstraintName("food_order_ingredient_food_order_fkey");
 
                 entity.HasOne(d => d.IngredientNavigation)
-                    .WithMany(p => p.FoodOrderIngredient)
+                    .WithMany()
                     .HasForeignKey(d => d.Ingredient)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("food_order_ingredient_ingredient_fkey");

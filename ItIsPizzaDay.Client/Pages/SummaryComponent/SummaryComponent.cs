@@ -25,7 +25,8 @@ namespace ItIsPizzaDay.Client.Pages.SummaryComponent
                 select new Report(header.FoodNavigation,
                     header.FoodOrderIngredient.Where(i => i.Isremoval).Select(i => i.IngredientNavigation.Name),
                     header.FoodOrderIngredient.Where(i => !i.Isremoval).Select(i => i.IngredientNavigation.Name),
-                    g.Count());
+                    g.Count(),
+                    g.Sum(o => o.Price()));
         }
     }
 }

@@ -31,6 +31,5 @@ namespace ItIsPizzaDay.Shared.Models
         public static bool operator ==(Entity left, Entity right) => Equals(left, right);
 
         public static bool operator !=(Entity left, Entity right) => !Equals(left, right);
-
     }
 }
