@@ -1,3 +1,5 @@
+using ItIsPizzaDay.Shared.Models;
+
 namespace ItIsPizzaDay.Server
 {
     using System;

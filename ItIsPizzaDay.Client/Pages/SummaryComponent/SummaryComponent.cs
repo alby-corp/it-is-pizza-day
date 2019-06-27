@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,15 +19,14 @@ namespace ItIsPizzaDay.Client.Pages.SummaryComponent
         {
             Summaries =
                 from o in await Reader.Order.GetAllAsync()
+                where o.Date > DateTime.Now.Date
                 from fo in o.FoodOrder
                 group fo by fo.Key()
                 into g
                 let header = g.First()
                 select new Report(header.FoodNavigation,
                     header.FoodOrderIngredient.Where(i => i.Isremoval).Select(i => i.IngredientNavigation.Name),
-                    header.FoodOrderIngredient.Where(i => !i.Isremoval).Select(i => i.IngredientNavigation.Name),
-                    g.Count(),
-                    g.Sum(o => o.Price()));
+                    header.FoodOrderIngredient.Where(i => !i.Isremoval).Select(i => i.IngredientNavigation.Name), g.Count(), g.Sum(o => o.Price()));
         }
     }
 }

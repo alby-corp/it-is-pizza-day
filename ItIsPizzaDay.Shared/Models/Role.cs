@@ -1,4 +1,4 @@
-namespace ItIsPizzaDay.Server
+namespace ItIsPizzaDay.Shared.Models
 {
     public static class Role
     {

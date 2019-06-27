@@ -8,10 +8,12 @@ namespace ItIsPizzaDay.Client.Services
     public class AuthService
     {
         private readonly AuthConfig _config;
+        private readonly ReadService _reader;
 
-        public AuthService(AuthConfig config)
+        public AuthService(AuthConfig config, ReadService reader)
         {
             _config = config;
+            _reader = reader;
         }
 
         private IJSInProcessRuntime JS => (IJSInProcessRuntime)JSRuntime.Current;
@@ -33,8 +35,9 @@ namespace ItIsPizzaDay.Client.Services
                 return null;
             }
 
-            return new AuthenticatedUser(result.UserName, new Token(result.IdToken, result.Expires));
+            var user = await _reader.User.GetByTokenAsync();
 
+            return new AuthenticatedUser(result.UserName, new Token(result.IdToken, result.Expires), user.Role);
         }
         
         class GetTokenResult

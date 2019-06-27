@@ -17,7 +17,7 @@ namespace ItIsPizzaDay.Client.Services
             _baseUrl = config.BaseUrl;
         }
 
-        public Task<T> GetAsync(Guid id)
+        public Task<T> GetAsync(Guid id) 
             => GetJson<T>($"Get/{id}");
 
         public Task<ICollection<T>> GetAllAsync() 
