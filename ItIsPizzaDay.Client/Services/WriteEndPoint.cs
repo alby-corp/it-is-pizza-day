@@ -13,8 +13,8 @@ namespace ItIsPizzaDay.Client.Services.Abstract
     {
         private readonly Uri _baseUrl;
 
-        public WriteEndPoint(HttpClient http, ApiConfig config, AuthService authService)
-        :base(http, authService)
+        public WriteEndPoint(HttpClient http, ApiConfig config, AuthService tokenSource)
+        :base(http, tokenSource)
         {
             _baseUrl = config.BaseUrl;
         }

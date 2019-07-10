@@ -11,8 +11,8 @@ namespace ItIsPizzaDay.Client.Services
     {
         private readonly Uri _baseUrl;
 
-        public ReadEndPoint(HttpClient http, ApiConfig config, AuthService authService)
-            : base(http, authService)
+        public ReadEndPoint(HttpClient http, ApiConfig config, ITokenSource tokenSource)
+            : base(http, tokenSource)
         {
             _baseUrl = config.BaseUrl;
         }

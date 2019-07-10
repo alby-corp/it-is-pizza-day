@@ -9,10 +9,12 @@ namespace ItIsPizzaDay.Server
     using Microsoft.AspNetCore.Blazor.Server;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.ResponseCompression;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.DependencyInjection.Extensions;
     using Middlewares;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
@@ -54,6 +56,7 @@ namespace ItIsPizzaDay.Server
                 });
             });
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IClaimsTransformation, ClaimsTransformation>();
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
@@ -63,6 +66,7 @@ namespace ItIsPizzaDay.Server
                 {
                     options.Authority = "https://login.microsoftonline.com/e64bac42-73e6-48b8-abae-54b44ceed0da/v2.0";
                     options.Audience  = "97b8377a-5c1c-4b1c-a630-6299b71718fe";
+                    options.SaveToken = true;
                 });
         }
 

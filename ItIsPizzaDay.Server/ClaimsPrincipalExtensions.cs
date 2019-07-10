@@ -22,6 +22,12 @@ namespace ItIsPizzaDay.Server
             => principal.FindFirstValue("name");       
         
         public static bool GetIsAdmin(this ClaimsPrincipal principal)
-            => principal.IsInRole(Role.Admin);
+            => principal.IsInRole(Role.Admin); 
+        
+        public static DateTimeOffset GetExpiration(this ClaimsPrincipal principal)
+        {
+            var expiration = principal.FindFirstValue("exp");
+            return DateTimeOffset.FromUnixTimeSeconds(long.Parse(expiration));
+        }
     }
 }

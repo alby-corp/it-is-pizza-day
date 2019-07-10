@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Blazor.Services;
 
 namespace ItIsPizzaDay.Client.Pages.WaiterComponent
 {
+    using System;
+
     public class WaiterComponent : BlazorComponent
     {
         protected ElementRef filterInput;
@@ -105,7 +107,18 @@ namespace ItIsPizzaDay.Client.Pages.WaiterComponent
 
         private void UpdateBetterDeals()
         {
-            if (Food.Type.ToString() != "2ee7bc5b-1ec1-4e4b-b457-1206fd1cbdd3") return;
+            // TODO :)
+            var compatibleTypes = new[]
+            {
+                "32daf241-8c63-49a0-a22d-61057e46a730",
+                "a9af080e-4a6a-4918-bbd2-834feeb36737",
+                "0b9eec7f-cf8d-4771-87aa-51259e2fc816"
+            };
+            
+            if (!compatibleTypes.Contains(Food.Type.ToString()))
+            {
+                return;
+            }
 
             BetterDeals = FoodOrderService.LowestPrice(CustomIngredients, Foods)
                 .Where(order => order.Price() < TotalPrice)

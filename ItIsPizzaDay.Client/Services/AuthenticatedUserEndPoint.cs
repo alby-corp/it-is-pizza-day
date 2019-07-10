@@ -7,7 +7,7 @@ namespace ItIsPizzaDay.Client.Services
 {
     public class AuthenticatedUserEndPoint :  ReadEndPoint<AuthenticatedUser>
     {
-        public AuthenticatedUserEndPoint(HttpClient http, ApiConfig config, AuthService authService) : base(http, config, authService)
+        public AuthenticatedUserEndPoint(HttpClient http, ApiConfig config, ITokenSource tokenSource) : base(http, config, tokenSource)
         {
         }
         

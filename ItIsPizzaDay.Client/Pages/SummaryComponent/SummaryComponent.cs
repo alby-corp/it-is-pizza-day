@@ -8,15 +8,22 @@ using Microsoft.AspNetCore.Blazor.Components;
 
 namespace ItIsPizzaDay.Client.Pages.SummaryComponent
 {
+    using Services;
+
     public class SummaryComponent : BlazorComponent
     {
         [Inject] private IReadService Reader { get; set; }
+        [Inject] private AuthService AuthService { get; set; }
+
+        protected AuthenticatedUser User { get; set; }
 
         protected IEnumerable<Report> Summaries { get; private set; } =
             new List<Report>();
-
+        
         protected override async Task OnInitAsync()
         {
+            User = await AuthService.TryGetUserAsync();
+
             Summaries =
                 from o in await Reader.Order.GetAllAsync()
                 where o.Date > DateTime.Now.Date

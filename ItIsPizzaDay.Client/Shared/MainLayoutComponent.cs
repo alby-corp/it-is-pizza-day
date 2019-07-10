@@ -1,6 +1,7 @@
 namespace ItIsPizzaDay.Client.Shared
 {
     using System.Threading.Tasks;
+    using ItIsPizzaDay.Shared.Models;
     using Microsoft.AspNetCore.Blazor.Components;
     using Microsoft.AspNetCore.Blazor.Layouts;
     using Models;

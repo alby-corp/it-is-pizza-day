@@ -1,34 +1,37 @@
 @page "/summary";
+@using ItIsPizzaDay.Shared.Models
 @inherits SummaryComponent;
 
-
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th scope="col">#</th>
-        <th scope="col">Piatto</th>
-        <th scope="col">Supplementi</th>
-        <th scope="col">Rimozioni</th>
-        <th scope="col">Prezzo</th>
-    </tr>
-    </thead>
-    <tbody>
-
-    @foreach (var s in Summaries)
-    {
+@if (User?.Role == Role.Admin)
+{
+    <table class="table table-striped">
+        <thead>
         <tr>
-            <td>@s.Count</td>
-            <td>@s.Food.Name</td>
-            <td>@string.Join("; ", s.Supplements)</td>
-            <td>@string.Join("; ", s.Removals)</td>
-            <td>@s.Price.ToString("N") &euro;</td>
+            <th scope="col">#</th>
+            <th scope="col">Piatto</th>
+            <th scope="col">Supplementi</th>
+            <th scope="col">Rimozioni</th>
+            <th scope="col">Prezzo</th>
         </tr>
-    }
+        </thead>
+        <tbody>
+
+        @foreach (var s in Summaries)
+        {
+            <tr>
+                <td>@s.Count</td>
+                <td>@s.Food.Name</td>
+                <td>@string.Join("; ", s.Supplements)</td>
+                <td>@string.Join("; ", s.Removals)</td>
+                <td>@s.Price.ToString("N") &euro;</td>
+            </tr>
+        }
 
 
-    </tbody>
-</table>
+        </tbody>
+    </table>
 
-<h3 class="text-right p-4">
-    Totale: @Summaries.Sum(summary => summary.Price).ToString("N") &euro;
-</h3>
+    <h3 class="text-right p-4">
+        Totale: @Summaries.Sum(summary => summary.Price).ToString("N") &euro;
+    </h3>
+}

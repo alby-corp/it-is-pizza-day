@@ -9,21 +9,35 @@ namespace ItIsPizzaDay.Client.Services
 
     public class ReadService : IReadService
     {
-        private readonly AuthService _authService;
+        private readonly ITokenSource _tokenSource;
         private readonly ApiConfig _config;
         private readonly HttpClient _http;
 
-        public ReadService(HttpClient http, ApiConfig config, AuthService authService)
+        public ReadService(HttpClient http, ApiConfig config, ITokenSource tokenSource)
         {
             _http = http;
             _config = config;
-            _authService = authService;
+            _tokenSource = tokenSource;
         }
 
-        public AuthenticatedUserEndPoint User => new AuthenticatedUserEndPoint(_http, _config, _authService);
-        public ReadEndPoint<Food> Food => new ReadEndPoint<Food>(_http, _config, _authService);
-        public ReadEndPoint<Ingredient> Ingredient => new ReadEndPoint<Ingredient>(_http, _config, _authService);
-        public ReadEndPoint<FoodType> Type => new ReadEndPoint<FoodType>(_http, _config, _authService);
-        public OrderReadEndPoint Order => new OrderReadEndPoint(_http, _config, _authService);
+        public AuthenticatedUserEndPoint User => new AuthenticatedUserEndPoint(_http, _config, _tokenSource);
+        public ReadEndPoint<Food> Food => new ReadEndPoint<Food>(_http, _config, _tokenSource);
+        public ReadEndPoint<Ingredient> Ingredient => new ReadEndPoint<Ingredient>(_http, _config, _tokenSource);
+        public ReadEndPoint<FoodType> Type => new ReadEndPoint<FoodType>(_http, _config, _tokenSource);
+        public OrderReadEndPoint Order => new OrderReadEndPoint(_http, _config, _tokenSource);
+    }
+
+    public class ReadServiceFactory
+    {
+        private readonly ApiConfig _config;
+        private readonly HttpClient _http;
+        
+        public ReadServiceFactory(HttpClient http, ApiConfig config)
+        {
+            _http = http;
+            _config = config;
+        }
+        
+        public IReadService Create(ITokenSource tokenSource) => new ReadService(_http, _config, tokenSource);
     }
 }

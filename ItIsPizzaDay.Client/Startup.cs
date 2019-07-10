@@ -13,8 +13,10 @@ namespace ItIsPizzaDay.Client
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddStorage();
-            services.AddSingleton<IReadService, ReadService>();
             services.AddSingleton<IWriteService, WriteService>();
+            services.AddSingleton<ReadServiceFactory>();
+            services.AddSingleton(provider => provider.GetRequiredService<ReadServiceFactory>().Create(provider.GetRequiredService<ITokenSource>()));
+            
             services.AddSingleton<ICartService>(provider => new CartService(provider.GetRequiredService<LocalStorage>(),
                 "f71cf4e3-a9b1-4852-a893-9f71a6399b4b"));
             services.AddSingleton<IAlby, Alby>();
@@ -37,6 +39,7 @@ namespace ItIsPizzaDay.Client
             });
 
             services.AddSingleton<AuthService>();
+            services.AddSingleton<ITokenSource>(provider => provider.GetRequiredService<AuthService>());
         }
 
         public void Configure(IBlazorApplicationBuilder app)

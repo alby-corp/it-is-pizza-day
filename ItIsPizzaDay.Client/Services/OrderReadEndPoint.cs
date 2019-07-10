@@ -9,8 +9,8 @@ namespace ItIsPizzaDay.Client.Services
 
     public class OrderReadEndPoint : ReadEndPoint<Order>
     {
-        public OrderReadEndPoint(HttpClient http, ApiConfig config, AuthService authService)
-            : base(http, config, authService)
+        public OrderReadEndPoint(HttpClient http, ApiConfig config, ITokenSource tokenSource)
+            : base(http, config, tokenSource)
         {
         }
         

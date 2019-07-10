@@ -4,6 +4,7 @@ namespace ItIsPizzaDay.Client.Services.Abstract
 
     public interface IReadService
     {
+        AuthenticatedUserEndPoint User { get; }
         ReadEndPoint<Food> Food { get; }
         ReadEndPoint<Ingredient> Ingredient { get; }
         ReadEndPoint<Type> Type { get; }

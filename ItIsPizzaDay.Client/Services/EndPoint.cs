@@ -6,22 +6,22 @@ namespace ItIsPizzaDay.Client.Services
     public class EndPoint
     {
         protected readonly HttpClient _http;
-        protected readonly AuthService _authService;
+        readonly ITokenSource _tokenSource;
 
-        public EndPoint(HttpClient http, AuthService authService)
+        public EndPoint(HttpClient http, ITokenSource tokenSource)
         {
             _http = http;
-            _authService = authService;
+            _tokenSource = tokenSource;
         }
 
         protected async Task SetAuthorizationHeaders()
         {
-            var user = await _authService.TryGetUserAsync();
+            var token = await _tokenSource.TryGetTokenAsync();
 
-            if (user != null)
+            if (token != null)
             {
                 _http.DefaultRequestHeaders.Remove("Authorization");
-                _http.DefaultRequestHeaders.Add("Authorization", $"Bearer {user.Token.Value}");
+                _http.DefaultRequestHeaders.Add("Authorization", $"Bearer {token.Value}");
             }
         }
     }

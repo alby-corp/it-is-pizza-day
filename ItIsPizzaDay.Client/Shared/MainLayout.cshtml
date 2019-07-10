@@ -1,3 +1,4 @@
+@using ItIsPizzaDay.Shared.Models
 @inherits MainLayoutComponent
 
 <div class="sidebar">
@@ -11,27 +12,34 @@
 
     <div class=@(_collapseNavMenu ? "collapse" : null) onclick="@ToggleNavMenu">
         <ul class="nav flex-column">
-            <li class="nav-item px-3">
-                <NavLink class="nav-link" href="/" Match="@NavLinkMatch.All">
-                    <span class="oi oi-list-rich" aria-hidden="true"></span> Shop
-                </NavLink>
-            </li>
-            <li class="nav-item px-3 d-md-none">
-                <NavLink class="nav-link" href="cart">
-                    <span class="oi oi-cart" aria-hidden="true"></span> Carrello
-                    <span class="badge badge-light ml-1">@TotalCartItems</span>
-                </NavLink>
-            </li>
-            <li class="nav-item px-3">
-                <NavLink class="nav-link" href="orders">
-                    <span class="oi oi-thumb-up" aria-hidden="true"></span> Ordini
-                </NavLink>
-            </li>
-            <li class="nav-item px-3">
-                <NavLink class="nav-link" href="summary">
-                    <span class="oi oi-phone" aria-hidden="true"></span> Summary
-                </NavLink>
-            </li>
+            @if (User != null)
+            {
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="/" Match="@NavLinkMatch.All">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> Shop
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3 d-md-none">
+                    <NavLink class="nav-link" href="cart">
+                        <span class="oi oi-cart" aria-hidden="true"></span> Carrello
+                        <span class="badge badge-light ml-1">@TotalCartItems</span>
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="orders">
+                        <span class="oi oi-thumb-up" aria-hidden="true"></span> Ordini
+                    </NavLink>
+                </li>
+            
+                @if (User.Role == Role.Admin)
+                 {
+                     <li class="nav-item px-3">
+                         <NavLink class="nav-link" href="summary">
+                             <span class="oi oi-phone" aria-hidden="true"></span> Summary
+                         </NavLink>
+                     </li>
+                 }
+            }
             <li class="nav-item px-3 d-md-none">
                 @if (User != null)
                 {

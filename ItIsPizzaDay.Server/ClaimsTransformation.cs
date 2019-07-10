@@ -3,15 +3,19 @@ namespace ItIsPizzaDay.Server
     using System.Security.Claims;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Http;
     using Shared.Models;
 
     class ClaimsTransformation : IClaimsTransformation
     {
         readonly QueenMargheritaContext db;
+        readonly IHttpContextAccessor _http;
 
-        public ClaimsTransformation(QueenMargheritaContext db)
+        public ClaimsTransformation(QueenMargheritaContext db, IHttpContextAccessor http)
         {
             this.db = db;
+            _http = http;
         }
 
         public async Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
@@ -39,7 +43,7 @@ namespace ItIsPizzaDay.Server
             var result = ((ClaimsIdentity)principal.Identity).Clone();
             
             result.AddClaim(new Claim(result.RoleClaimType, user.IsAdmin ? Role.Admin : Role.User));
-           
+            
             return new ClaimsPrincipal(result);
         }
     }
