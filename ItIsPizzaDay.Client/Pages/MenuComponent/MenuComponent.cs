@@ -32,12 +32,9 @@ namespace ItIsPizzaDay.Client.Pages.MenuComponent
             // TODO :)
             var compatibleTypes = new[]
             {
-                "32daf241-8c63-49a0-a22d-61057e46a730",
-                "a9af080e-4a6a-4918-bbd2-834feeb36737",
-                "0b9eec7f-cf8d-4771-87aa-51259e2fc816"
+                "32daf241-8c63-49a0-a22d-61057e46a730"
             };
             Foods = foods.Where(food => compatibleTypes.Contains(food.Type.ToString())).ToList();
-            Console.WriteLine($"Fods: {Foods.Count}");
         }
     }
 }

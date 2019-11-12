@@ -2,36 +2,64 @@
 @using ItIsPizzaDay.Shared.Models
 @inherits SummaryComponent;
 
-@if (User?.Role == Role.Admin)
+<h3 class="text-right p-4">
+    Totale: @Summaries.Sum(summary => summary.Price).ToString("N") &euro;
+</h3>
+
+@if (User?.Role != Role.Admin)
 {
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Piatto</th>
-            <th scope="col">Supplementi</th>
-            <th scope="col">Rimozioni</th>
-            <th scope="col">Prezzo</th>
-        </tr>
-        </thead>
-        <tbody>
-
-        @foreach (var s in Summaries)
-        {
-            <tr>
-                <td>@s.Count</td>
-                <td>@s.Food.Name</td>
-                <td>@string.Join("; ", s.Supplements)</td>
-                <td>@string.Join("; ", s.Removals)</td>
-                <td>@s.Price.ToString("N") &euro;</td>
-            </tr>
-        }
-
-
-        </tbody>
-    </table>
-
-    <h3 class="text-right p-4">
-        Totale: @Summaries.Sum(summary => summary.Price).ToString("N") &euro;
-    </h3>
+    return;
 }
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Piatto</th>
+        <th scope="col">Supplementi</th>
+        <th scope="col">Rimozioni</th>
+        <th scope="col">Prezzo</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    @foreach (var s in Summaries)
+    {
+        <tr>
+            <td>@s.Count</td>
+            <td>@s.Food.Name</td>
+            <td>@string.Join("; ", s.Supplements)</td>
+            <td>@string.Join("; ", s.Removals)</td>
+            <td>@s.Price.ToString("N") &euro;</td>
+        </tr>
+    }
+
+
+    </tbody>
+</table>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Rocketman</th>
+        <th scope="col">Food</th>
+        <th scope="col">Totale</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    @foreach (var (value, index) in Orders.Select((value, index) => (value, index + 1)).OrderByDescending(o => o.Item1.MuppetNavigation.RealName))
+    {
+        <tr>
+            <td>@index</td>
+            <td>@value.MuppetNavigation.RealName</td>
+            <td>@string.Join("; ", value.FoodOrder.Select(fo => fo.FoodNavigation.Name))</td>
+            <td>@((value.FoodOrder.Sum(fo => fo.FoodNavigation.Price) + value.FoodOrder.SelectMany(fo => fo.FoodOrderIngredient).Sum(foi => foi.IngredientNavigation.Price ?? 0)).ToString("N")) &euro;
+            </td>
+        </tr>
+    }
+
+
+    </tbody>
+</table>

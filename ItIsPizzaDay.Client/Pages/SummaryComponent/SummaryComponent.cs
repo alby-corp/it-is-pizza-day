@@ -20,12 +20,16 @@ namespace ItIsPizzaDay.Client.Pages.SummaryComponent
         protected IEnumerable<Report> Summaries { get; private set; } =
             new List<Report>();
         
+        protected IEnumerable<Order> Orders { get; private set; }
+        
         protected override async Task OnInitAsync()
         {
             User = await AuthService.TryGetUserAsync();
 
+            Orders = await Reader.Order.GetAllAsync();
+            
             Summaries =
-                from o in await Reader.Order.GetAllAsync()
+                from o in Orders
                 where o.Date > DateTime.Now.Date
                 from fo in o.FoodOrder
                 group fo by fo.Key()
