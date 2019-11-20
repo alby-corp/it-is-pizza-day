@@ -20,6 +20,9 @@ namespace ItIsPizzaDay.Client.Pages.SummaryComponent
         protected IEnumerable<Report> Summaries { get; private set; } =
             new List<Report>();
         
+        protected IEnumerable<UserSummary> UsersSummaries { get; set; } =
+            new List<UserSummary>();
+        
         protected IEnumerable<Order> Orders { get; private set; }
         
         protected override async Task OnInitAsync()
@@ -27,7 +30,13 @@ namespace ItIsPizzaDay.Client.Pages.SummaryComponent
             User = await AuthService.TryGetUserAsync();
 
             Orders = await Reader.Order.GetAllAsync();
-            
+
+            UsersSummaries = Orders.GroupBy(
+                    p => p.MuppetNavigation.RealName,
+                    p => p.FoodOrder,
+                    (key, g) => new {key, g})
+                .Select(p => new UserSummary(p.key, p.g.SelectMany(op => op).ToList() ));
+
             Summaries =
                 from o in Orders
                 from fo in o.FoodOrder

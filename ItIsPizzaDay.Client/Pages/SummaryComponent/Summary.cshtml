@@ -49,13 +49,20 @@
     </thead>
     <tbody>
 
-    @foreach (var (value, index) in Orders.Select((value, index) => (value, index + 1)).OrderByDescending(o => o.Item1.MuppetNavigation.RealName))
+    @foreach (var (value, index) in UsersSummaries.Select((value, index) => (value, index + 1)))
     {
         <tr>
             <td>@index</td>
-            <td>@value.MuppetNavigation.RealName</td>
-            <td>@string.Join("; ", value.FoodOrder.Select(fo => fo.FoodNavigation.Name))</td>
-            <td>@((value.FoodOrder.Sum(fo => fo.FoodNavigation.Price) + value.FoodOrder.SelectMany(fo => fo.FoodOrderIngredient).Sum(foi => foi.IngredientNavigation.Price ?? 0)).ToString("N")) &euro;</td>
+            <td>@value.UserName</td>
+            <td>
+                <ul>
+                    @foreach (var f in value.Foods)
+                    {
+                        <li>@f</li>
+                    }
+                </ul>
+            </td>
+            <td>@value.Total.ToString("N2") &euro;</td>
         </tr>
     }
     </tbody>
