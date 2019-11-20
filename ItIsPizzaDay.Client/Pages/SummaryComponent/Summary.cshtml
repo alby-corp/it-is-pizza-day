@@ -55,11 +55,8 @@
             <td>@index</td>
             <td>@value.MuppetNavigation.RealName</td>
             <td>@string.Join("; ", value.FoodOrder.Select(fo => fo.FoodNavigation.Name))</td>
-            <td>@((value.FoodOrder.Sum(fo => fo.FoodNavigation.Price) + value.FoodOrder.SelectMany(fo => fo.FoodOrderIngredient).Sum(foi => foi.IngredientNavigation.Price ?? 0)).ToString("N")) &euro;
-            </td>
+            <td>@((value.FoodOrder.Sum(fo => fo.FoodNavigation.Price) + value.FoodOrder.SelectMany(fo => fo.FoodOrderIngredient).Sum(foi => foi.IngredientNavigation.Price ?? 0)).ToString("N")) &euro;</td>
         </tr>
     }
-
-
     </tbody>
 </table>

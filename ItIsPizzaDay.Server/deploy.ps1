@@ -1,3 +1,6 @@
+dotnet --list-sdks
+dotnet new globaljson --sdk-version 2.2.100
+
 dotnet publish -c Release
 docker build -t it-is-pizza-day ./
 

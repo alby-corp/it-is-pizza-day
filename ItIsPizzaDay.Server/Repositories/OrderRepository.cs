@@ -28,7 +28,7 @@ namespace ItIsPizzaDay.Server.Repositories
         
         public Task<List<Order>> GetAllByUser(Guid userId) 
             => GetEntities()
-                .Where(order => order.Muppet == userId)
+                .Where(order => order.Muppet == userId && order.Date > DateTime.Now.AddDays(-1))
                 .ToListAsync();
     }
 }

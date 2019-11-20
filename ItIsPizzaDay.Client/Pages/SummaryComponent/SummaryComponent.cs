@@ -30,7 +30,6 @@ namespace ItIsPizzaDay.Client.Pages.SummaryComponent
             
             Summaries =
                 from o in Orders
-                where o.Date > DateTime.Now.Date
                 from fo in o.FoodOrder
                 group fo by fo.Key()
                 into g
