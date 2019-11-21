@@ -14,10 +14,29 @@
             UserName = username;
 
 
-            Foods = foodOrders.Select(fo => $"{fo.FoodNavigation.Name}. " +
-                                               $"Supp: {string.Join(";", fo.FoodOrderIngredient.Where(foi => !foi.Isremoval).Select(foi => foi.IngredientNavigation.Name))}" +
-                                               $"Rem: {string.Join(";", fo.FoodOrderIngredient.Where(foi => foi.Isremoval).Select(foi => foi.IngredientNavigation.Name))}");
-            
+            Foods = foodOrders.Select(fo =>
+            {
+                var supplements = fo.FoodOrderIngredient
+                    .Where(foi => !foi.Isremoval)
+                    .Select(foi => foi.IngredientNavigation.Name)
+                    .ToList();
+
+                var removals = fo.FoodOrderIngredient
+                    .Where(foi => foi.Isremoval)
+                    .Select(foi => foi.IngredientNavigation.Name)
+                    .ToList();
+
+                var supplementsText = supplements.Any()
+                    ? $"Supp: {string.Join(";", supplements)}"
+                    : string.Empty;
+
+                var removalsText = removals.Any()
+                    ? $"Rem: {string.Join(";", removals)}"
+                    : string.Empty;
+
+                return $"{fo.FoodNavigation.Name}. {supplementsText} {removalsText}";
+            });
+
             Total = foodOrders.Sum(fo => fo.FoodNavigation.Price) + foodOrders.SelectMany(fo => fo.FoodOrderIngredient)
                         .Sum(foi => foi.IngredientNavigation.Price ?? 0);
         }
