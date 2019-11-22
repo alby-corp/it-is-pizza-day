@@ -34,7 +34,12 @@
                     ? $"Rem: {string.Join(";", removals)}"
                     : string.Empty;
 
-                return $"{fo.FoodNavigation.Name}. {supplementsText} {removalsText}";
+                var price = fo.Price() + 
+                            fo.FoodOrderIngredient
+                                .Where(foi => !foi.Isremoval)
+                                .Sum(foi => foi.IngredientNavigation.Price);
+
+                return $"{fo.FoodNavigation.Name}. {supplementsText} {removalsText} Price: {price}";
             });
 
             Total = foodOrders.Sum(fo => fo.FoodNavigation.Price) + foodOrders.SelectMany(fo => fo.FoodOrderIngredient)
