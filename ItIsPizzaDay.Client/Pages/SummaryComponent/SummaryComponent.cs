@@ -30,12 +30,21 @@ namespace ItIsPizzaDay.Client.Pages.SummaryComponent
             User = await AuthService.TryGetUserAsync();
 
             Orders = await Reader.Order.GetAllAsync();
+            
+            Console.WriteLine($"qui");
 
+            
             UsersSummaries = Orders.GroupBy(
-                    p => p.MuppetNavigation.RealName,
-                    p => p.FoodOrder,
-                    (key, g) => new {key, g})
-                .Select(p => new UserSummary(p.key, p.g.SelectMany(op => op).ToList() ));
+                                p => p.MuppetNavigation.RealName,
+                                p => p.FoodOrder,
+                                (key, g) => new {key, g})
+                            .Select(p => new UserSummary(p.key, p.g.SelectMany(op => op).ToList() ));
+            
+                        foreach (var sum in UsersSummaries)
+                        {
+                            Console.WriteLine(sum.ToString());
+                        }
+                        
 
             Summaries =
                 from o in Orders
@@ -46,6 +55,8 @@ namespace ItIsPizzaDay.Client.Pages.SummaryComponent
                 select new Report(header.FoodNavigation,
                     header.FoodOrderIngredient.Where(i => i.Isremoval).Select(i => i.IngredientNavigation.Name),
                     header.FoodOrderIngredient.Where(i => !i.Isremoval).Select(i => i.IngredientNavigation.Name), g.Count(), g.Sum(o => o.Price()));
+            
+            StateHasChanged();
         }
     }
 }

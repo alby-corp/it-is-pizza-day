@@ -24,8 +24,10 @@ namespace ItIsPizzaDay.Server.Repositories
 
             .Include(order => order.FoodOrder)
             .ThenInclude(orders => orders.FoodOrderIngredient)
-            .ThenInclude(collection => collection.IngredientNavigation);
-        
+            .ThenInclude(collection => collection.IngredientNavigation)
+
+            .Include(order => order.MuppetNavigation);
+
         public Task<List<Order>> GetAllByUser(Guid userId) 
             => GetEntities()
                 .Where(order => order.Muppet == userId && order.Date > DateTime.Now.AddDays(-1))

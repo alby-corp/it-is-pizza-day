@@ -29,7 +29,11 @@ namespace ItIsPizzaDay.Server.Controllers
         }
 
         [HttpGet]
-        public virtual async Task<IActionResult> GetAll() => Ok(await _repository.GetAll());
+        public virtual async Task<IActionResult> GetAll()
+        {
+            var all = await _repository.GetAll();
+            return Ok(all);
+        }
 
         [HttpPost, Authorize]
         public virtual async Task<IActionResult> Create([FromBody] T entity)
